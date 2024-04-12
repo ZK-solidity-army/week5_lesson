@@ -12,6 +12,7 @@
     "chain": "yarn workspace @se-2/hardhat chain",
     "compile": "yarn workspace @se-2/hardhat compile",
     "deploy": "yarn workspace @se-2/hardhat deploy",
+    "export": "yarn workspace @se-2/hardhat export",
     "flatten": "yarn workspace @se-2/hardhat flatten",
     "fork": "yarn workspace @se-2/hardhat fork",
     "format": "yarn next:format && yarn hardhat:format",
