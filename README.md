@@ -1,4 +1,4 @@
-#  Group 9 Lottery 
+#  Group 9 Lottery
 
 ## Installation
 
