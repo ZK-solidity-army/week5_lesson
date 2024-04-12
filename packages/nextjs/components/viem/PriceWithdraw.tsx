@@ -22,7 +22,7 @@ export default function PriceWithdraw() {
   };
 
   return (
-    <div className="card bg-primary text-primary-content mt-2">
+    <div className="card mt-2 bg-base-100 shadow-xl">
       <div className="card-body">
         <h2 className="card-title">Price Withdraw</h2>
         <label className="label">
@@ -53,7 +53,7 @@ export default function PriceWithdraw() {
             />
           </div>
           <div className="ml-4">
-            <button className="btn btn-active btn-neutral" onClick={onClick}>
+            <button className="btn" onClick={onClick}>
               Buy Tokens!
             </button>
           </div>

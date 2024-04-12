@@ -4,14 +4,10 @@ export default function BalanceOfTokens() {
   const tokens = "NAME_OF_THE_TOKEN";
   const balance_of_tokens = "01234567890";
   return (
-    <div className="card bg-primary text-primary-content mt-2">
+    <div className="card bg-base-100 shadow-xl mt-2">
       <div className="card-body">
-        <label className="label">
-          <span className="label-text">Balance ${tokens}:</span>
-        </label>
-        <div className="flex flex-row items-center">
-          <h1>${balance_of_tokens}</h1>
-        </div>
+        <h2 className="card-title">Balance ${tokens}</h2>
+        <div className="flex flex-row items-center">${balance_of_tokens}</div>
       </div>
     </div>
   );

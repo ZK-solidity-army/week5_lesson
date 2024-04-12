@@ -22,7 +22,7 @@ export default function OpenBets() {
   };
 
   return (
-    <div className="card bg-primary text-primary-content mt-2">
+    <div className="card bg-base-100 shadow-xl mt-2">
       <div className="card-body">
         <h2 className="card-title">Open Bet</h2>
         <div className="flex flex-row items-center">
@@ -36,7 +36,7 @@ export default function OpenBets() {
             />
           </div>
           <div className="ml-4">
-            <button className="btn btn-active btn-neutral" onClick={onClick}>
+            <button className="btn" onClick={onClick}>
               Open bet.
             </button>
           </div>

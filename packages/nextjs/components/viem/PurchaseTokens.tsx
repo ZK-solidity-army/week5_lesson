@@ -22,7 +22,7 @@ export default function PurchaseTokens() {
   };
 
   return (
-    <div className="card bg-primary text-primary-content mt-2">
+    <div className="card bg-base-100 shadow-xl mt-2">
       <div className="card-body">
         <h2 className="card-title">Purchase tokens</h2>
         <label className="label">
@@ -39,7 +39,7 @@ export default function PurchaseTokens() {
             />
           </div>
           <div className="ml-4">
-            <button className="btn btn-active btn-neutral" onClick={onClick}>
+            <button className="btn" onClick={onClick}>
               Buy Tokens!
             </button>
           </div>
