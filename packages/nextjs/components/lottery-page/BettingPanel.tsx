@@ -1,6 +1,10 @@
 "use client";
 
 import type { NextPage } from "next";
+import BalanceOfTokens from "~~/components/viem/BalanceOfTokens";
+import Claim from "~~/components/viem/Claim";
+import MakeBet from "~~/components/viem/MakeBet";
+import PriceWithdraw from "~~/components/viem/PriceWithdraw";
 import PurchaseTokens from "~~/components/viem/PurchaseTokens";
 
 const BettingPanel: NextPage = () => {
@@ -14,18 +18,20 @@ const BettingPanel: NextPage = () => {
           <PurchaseTokens />
         </div>
         <div className="col-span-2">
-          <PurchaseTokens />
+          <MakeBet />
         </div>
       </div>
       <div className="col-span-3 grid grid-cols-3 gap-4">
-        <div className="col-span-1"></div>
+        <div className="col-span-1">
+          <BalanceOfTokens />
+        </div>
         <div className="col-span-2">
-          <PurchaseTokens />
+          <PriceWithdraw />
         </div>
       </div>
       <div className="col-span-3 grid grid-cols-3 gap-4">
         <div className="col-span-1"></div>
-        <PurchaseTokens />
+        <Claim />
         <div className="col-span-1"></div>
       </div>
     </>

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function PurchaseTokens() {
+export default function OpenBets() {
   const [amount, setAmount] = useState<string>("");
   const [isLoading, setLoading] = useState(false);
   const [requestError, setRequestError] = useState<string | null>(null);
@@ -24,10 +24,7 @@ export default function PurchaseTokens() {
   return (
     <div className="card bg-primary text-primary-content mt-2">
       <div className="card-body">
-        <h2 className="card-title">Purchase tokens</h2>
-        <label className="label">
-          <span className="label-text">Enter amount of tokens:</span>
-        </label>
+        <h2 className="card-title">Open Bet</h2>
         <div className="flex flex-row items-center">
           <div className="w-56 my-1">
             <input
@@ -40,7 +37,7 @@ export default function PurchaseTokens() {
           </div>
           <div className="ml-4">
             <button className="btn btn-active btn-neutral" onClick={onClick}>
-              Buy Tokens!
+              Open bet.
             </button>
           </div>
         </div>

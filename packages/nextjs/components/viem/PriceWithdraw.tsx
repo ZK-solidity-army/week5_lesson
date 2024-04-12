@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function PurchaseTokens() {
+export default function PriceWithdraw() {
   const [amount, setAmount] = useState<string>("");
   const [isLoading, setLoading] = useState(false);
   const [requestError, setRequestError] = useState<string | null>(null);
@@ -24,7 +24,21 @@ export default function PurchaseTokens() {
   return (
     <div className="card bg-primary text-primary-content mt-2">
       <div className="card-body">
-        <h2 className="card-title">Purchase tokens</h2>
+        <h2 className="card-title">Price Withdraw</h2>
+        <label className="label">
+          <span className="label-text">Choose betting numbers:</span>
+        </label>
+        <div className="flex flex-row items-center">
+          <div className="w-56 my-1">
+            <input
+              type="text"
+              placeholder="123456..."
+              className="input input-bordered w-full max-w-xs"
+              value={amount}
+              onChange={onChange}
+            />
+          </div>
+        </div>
         <label className="label">
           <span className="label-text">Enter amount of tokens:</span>
         </label>
@@ -43,6 +57,10 @@ export default function PurchaseTokens() {
               Buy Tokens!
             </button>
           </div>
+        </div>
+        <div className="flex flex-row items-center">
+          <h1>⚠️ Result:</h1>
+          <p>[text result]</p>
         </div>
       </div>
     </div>
