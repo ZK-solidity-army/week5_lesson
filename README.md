@@ -13,5 +13,5 @@ https://lottery.up.railway.app/
 
 ### Deployed versions
 
-* Lottery: [0x18c0bF0cd0C41A99969DF589cb870Cf644a12ea8](https://sepolia.etherscan.io/address/0x18c0bF0cd0C41A99969DF589cb870Cf644a12ea8)
-* LotteryToken: [0xa336771d3b237450951Cd964C756214b5Ee07944](https://sepolia.etherscan.io/address/0xa336771d3b237450951Cd964C756214b5Ee07944)
+* Lottery: [0x4beb1E1C266bAaD01A7379115Bb093b0c6907c76](https://sepolia.etherscan.io/address/0x4beb1E1C266bAaD01A7379115Bb093b0c6907c76)
+* LotteryToken: [0xcA454AdB702631779285AE353E4C5a7681B7463D](https://sepolia.etherscan.io/address/0xcA454AdB702631779285AE353E4C5a7681B7463D)
