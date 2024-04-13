@@ -1,5 +1,7 @@
 #  Group 9 Lottery
 
+https://lottery.up.railway.app/
+
 ## Installation
 
 * `yarn install`
@@ -8,9 +10,6 @@
 ## Smartcontracts
 
 * `yarn deploy --network sepolia`
-
-To export:
-* `yarn export --network sepoalia`
 
 ### Deployed versions
 
