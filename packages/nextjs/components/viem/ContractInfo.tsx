@@ -18,8 +18,9 @@ export default function ContractInfo({ className }: { className?: string }) {
         <div className="stat">
           <div className="stat-figure text-primary">
             <EthIcon className="inline-block w-8 h-8 stroke-current" />
+            <span className="stat-title">Sepolia ETH</span>
           </div>
-          <div className="stat-title">Sepolia ETH</div>
+
           <div className="stat-value text-primary">
             {ethBalance ? Number(ethBalance.formatted).toFixed(4) : "error"}
           </div>
@@ -57,8 +58,8 @@ export default function ContractInfo({ className }: { className?: string }) {
               </div>
             </div>
           </div>
+          <div className="stat-title">Bets made</div>
           <div className="stat-value">7 </div>
-          <div className="stat-title">Bets done</div>
           <div className="stat-desc text-secondary">of 80 bets total</div>
         </div>
       </div>

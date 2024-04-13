@@ -45,6 +45,7 @@ export const Footer = () => {
         <ul className="menu menu-horizontal w-full">
           <div className="flex justify-center items-center gap-2 text-sm w-full">
             <div className="text-center">
+              Encode Club Solidity Bootcamp &copy; <strong>Group 9</strong> |{" "}
               <a
                 href="https://github.com/ZK-solidity-army/week5_lesson"
                 target="_blank"

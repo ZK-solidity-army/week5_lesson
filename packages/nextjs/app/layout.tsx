@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     description,
   },
   icons: {
-    icon: [{ url: "/favicon.png", sizes: "32x32", type: "image/png" }],
+    icon: [{ url: "/coin.svg", sizes: "32x32", type: "image/svg" }],
   },
 };
 
