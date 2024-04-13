@@ -32,11 +32,15 @@ export default function PurchaseTokens({ className }: { className?: string }) {
   const onSubmit = useCallback(() => {
     if (!amount) return;
     if (isLoading) return;
+    if (!contractContext.purchaseRatio) return;
+
+    const ethAmount = getEthAmount(amount, contractContext.purchaseRatio);
+    if (!ethAmount) return;
 
     write({
-      value: parseEther(amount),
+      value: ethAmount,
     });
-  }, [amount, isLoading, write]);
+  }, [amount, isLoading, write, contractContext]);
 
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value);
@@ -47,7 +51,7 @@ export default function PurchaseTokens({ className }: { className?: string }) {
       <div className="card-body">
         <div className="md:w-[310px]">
           <div className="w-full mb-2 relative">
-            <span className="absolute right-3 top-4 text-2xl text-neutral-500">SEP</span>
+            <span className="absolute right-3 top-4 text-2xl text-neutral-500">{tokenSymbol}</span>
             <input
               type="text"
               placeholder="Amount"
@@ -58,8 +62,8 @@ export default function PurchaseTokens({ className }: { className?: string }) {
           </div>
           {amount && contractContext.purchaseRatio ? (
             <div className="text-neutral-500 text-sm my-3">
-              You will receive{" "}
-              {getTokenAmount(amount, contractContext.purchaseRatio, contractContext.tokenDecimals || 0)} {tokenSymbol}{" "}
+              You will spend{" "}
+              {formatEth(getEthAmount(amount, contractContext.purchaseRatio), contractContext.tokenDecimals || 0)} SEP
               tokens
             </div>
           ) : null}
@@ -75,16 +79,13 @@ export default function PurchaseTokens({ className }: { className?: string }) {
   );
 }
 
-const getTokenAmount = (_amount: string, ratio: bigint, decimals: number) => {
+const getEthAmount = (_amount: string, ratio: bigint) => {
   let amount: bigint;
   try {
     amount = parseEther(_amount);
   } catch {
-    return "0";
+    return 0n;
   }
 
-  console.log(BigInt(amount) * ratio);
-  console.log(amount, ratio, formatEth(BigInt(amount) * ratio, decimals));
-
-  return formatEth(BigInt(amount) * ratio, decimals);
+  return amount / ratio;
 };
