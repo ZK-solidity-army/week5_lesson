@@ -1,22 +1,24 @@
+import BurnTokens from "../viem/BurnTokens";
+import WithdrawTokens from "../viem/WithdrawTokens";
 import type { NextComponentType } from "next";
-import BalanceOfTokens from "~~/components/viem/BalanceOfTokens";
-import Claim from "~~/components/viem/Claim";
 import MakeBet from "~~/components/viem/MakeBet";
-import PriceWithdraw from "~~/components/viem/PriceWithdraw";
-import PurchaseTokens from "~~/components/viem/PurchaseTokens";
 
 const BettingPanel: NextComponentType = () => {
   return (
-    <div className="cardrelative m-4 pb-10">
+    <div className="px-4">
+      <div className="card border dark:border-base-300 bg-base-100 m-4 py-2 mt-12 max-w-[1000px] mx-auto">
+        {/*
       <div className="card-title">
         <h2 className="text-2xl my-4 indent-10">Player space</h2>
       </div>
-      <div className="card-body">
-        <PurchaseTokens />
-        <MakeBet />
-        <BalanceOfTokens />
-        <PriceWithdraw />
-        <Claim />
+      */}
+        <div className="card-body md:flex md:flex-row justify-around items-center">
+          <MakeBet className="my-8" />
+          <div className="divider md:divider-horizontal"></div>
+          <WithdrawTokens className="my-8" />
+          <div className="divider md:divider-horizontal"></div>
+          <BurnTokens className="my-8" />
+        </div>
       </div>
     </div>
   );

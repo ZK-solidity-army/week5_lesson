@@ -1,6 +1,6 @@
 import Image from "next/image";
 import EthIcon from "../svg/EthIcon";
-import TokenIcon from "../svg/TokenIcon";
+import BalanceOfTokens from "./BalanceOfTokens";
 import { blo } from "blo";
 import { twMerge } from "tailwind-merge";
 import { useAccount } from "wagmi";
@@ -21,16 +21,8 @@ export default function ContractInfo({ className }: { className?: string }) {
         <div className="stat-desc">Your sepolia network balance</div>
       </div>
 
-      <div className="stat">
-        <div className="stat-figure text-secondary">
-          <TokenIcon className="inline-block w-8 h-8 stroke-current" />
-        </div>
-        <div className="stat-title">Lottery Token</div>
-        <div className="stat-value text-secondary">2.007</div>
-        <div className="stat-desc">Amount of G9LT token</div>
-      </div>
+      <BalanceOfTokens />
 
-      {/*
       <div className="stat">
         <div className="stat-figure text-accent">
           <svg
@@ -42,24 +34,25 @@ export default function ContractInfo({ className }: { className?: string }) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
           </svg>
         </div>
-        <div className="stat-title">Bets</div>
-        <div className="stat-value text-accent">7</div>
-        <div className="stat-desc">How many bets you did</div>
+        <div className="stat-title">Won</div>
+        <div className="stat-value text-accent">31</div>
+        <div className="stat-desc">How many G9LT you won</div>
       </div>
-      */}
 
       <div className="stat">
         <div className="stat-figure text-secondary">
           <div className="avatar online">
             <div className="w-16 rounded-full">
-              <Image src={blo(account.address as `0x${string}`)} alt="Etherium identicon" fill={true} />
-              {/*
-              <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-          */}
+              <Image
+                src={blo(account.address as `0x${string}`)}
+                alt="Etherium identicon"
+                fill={true}
+                className="rounded-full"
+              />
             </div>
           </div>
         </div>
-        <div className="stat-value">7</div>
+        <div className="stat-value">7 </div>
         <div className="stat-title">Bets done</div>
         <div className="stat-desc text-secondary">of 80 bets total</div>
       </div>

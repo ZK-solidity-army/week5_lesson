@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { twMerge } from "tailwind-merge";
 
-export default function PurchaseTokens() {
+export default function PurchaseTokens({ className }: { className?: string }) {
   const [amount, setAmount] = useState<string>("");
   const [isLoading, setLoading] = useState(false);
   const [requestError, setRequestError] = useState<string | null>(null);
@@ -22,25 +23,21 @@ export default function PurchaseTokens() {
   };
 
   return (
-    <div className="card mt-2">
+    <div className={twMerge("card mt-2", className)}>
       <div className="card-body">
-        <h2 className="card-title">Purchase tokens</h2>
-        <label className="label">
-          <span className="label-text">Enter amount of tokens:</span>
-        </label>
-        <div className="flex flex-row items-center">
-          <div className="w-56 my-1">
+        <div className="md:w-56">
+          <div className="w-full mb-2">
             <input
               type="text"
-              placeholder="123456..."
-              className="input input-bordered w-full max-w-xs"
+              placeholder="10"
+              className="input input-bordered w-full max-w-xs input-lg text-2xl"
               value={amount}
               onChange={onChange}
             />
           </div>
-          <div className="ml-4">
-            <button className="btn" onClick={onClick}>
-              Buy Tokens!
+          <div>
+            <button className="btn btn-lg w-full" onClick={onClick}>
+              Buy Tokens
             </button>
           </div>
         </div>

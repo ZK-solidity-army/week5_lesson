@@ -1,21 +1,22 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import Lottie from "lottie-react";
-import bet from "~~/assets/lottie/bet.json";
+import prize from "~~/assets/lottie/prize.json";
 
-export default function MakeBet({ className }: { className?: string }) {
-  const [amount, setAmount] = useState<string>("1");
+export default function WithdrawTokens({ className }: { className?: string }) {
+  const [amount, setAmount] = useState<string>("");
   const [isLoading, setLoading] = useState(false);
   const [requestError, setRequestError] = useState<string | null>(null);
 
   console.log(isLoading);
   console.log(requestError);
 
-  const onClick = useCallback(async () => {
+  const onClick = async () => {
     if (!amount) return;
+
     setLoading(true);
-  }, [amount, setLoading]);
+  };
 
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setRequestError(null);
@@ -25,18 +26,27 @@ export default function MakeBet({ className }: { className?: string }) {
   return (
     <div className={className}>
       {/*
-        <h2 className="card-title">Make a bet</h2>
+        <h2 className="card-title">Price Withdraw</h2>
+        <label className="label">
+          <span className="label-text">Choose betting numbers:</span>
+        </label>
         */}
       <label className="label">
-        <span className="label-text">How many bets would you like to make?</span>
+        <span className="label-text">Enter amount of tokens to withdraw</span>
       </label>
       <div className="md:w-56">
-        <Lottie animationData={bet} className="w-56 h-56 mx-auto" loop={false} />
+        <Lottie animationData={prize} className="w-56 h-56 mx-auto" loop={false} />
         <div className="w-full">
-          <input type="text" className="input input-bordered w-full" value={amount} onChange={onChange} />
+          <input
+            type="text"
+            placeholder="G9LT amount"
+            className="input input-bordered w-full"
+            value={amount}
+            onChange={onChange}
+          />
         </div>
         <button className="btn w-full mt-2" onClick={onClick}>
-          🎰 Bet
+          Claim Tokens
         </button>
       </div>
 
