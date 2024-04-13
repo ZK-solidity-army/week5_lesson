@@ -31,6 +31,14 @@ const Home: NextPage = () => {
   }
   return (
     <Contract>
+      {/*
+      <h1 className="text-4xl sm:text-6xl text-center font-medium flex flex-col">
+        <span className="text-5xl sm:text-7xl text-base-content drop-shadow-lg">Etherium Lottery</span>
+        <span className="animate-text-gradient bg-gradient-to-r from-success via-slate-400 to-green-300 bg-[200%_auto] bg-clip-text leading-tight text-transparent">
+          Open
+        </span>
+      </h1>
+      */}
       <div className="text-center lg:sticky top-[-25px] z-10">
         <ContractInfo className="my-10" />
       </div>

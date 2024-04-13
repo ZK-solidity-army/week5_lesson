@@ -2,6 +2,7 @@ import Transaction from "./Transaction";
 import { twMerge } from "tailwind-merge";
 
 export default function TransactionList({ txHashes, className }: { txHashes: string[]; className?: string }) {
+  if (!txHashes.length) return null;
   return (
     <p className={twMerge("mt-5 mb-2", className)}>
       <ul>

@@ -6,6 +6,7 @@ import { twMerge } from "tailwind-merge";
 import { parseEther } from "viem";
 import { useContractWrite } from "wagmi";
 import * as chains from "wagmi/chains";
+import ErrorBlock from "~~/components/Error";
 import { ContractContext } from "~~/context";
 import deployedContracts from "~~/contracts/deployedContracts";
 import { formatEth } from "~~/utils/formatEth";
@@ -17,7 +18,7 @@ export default function PurchaseTokens({ className }: { className?: string }) {
   const contractContext = useContext(ContractContext);
   const tokenSymbol = contractContext.tokenSymbol || "'Unknown'";
 
-  const { isLoading, write } = useContractWrite({
+  const { isLoading, write, error } = useContractWrite({
     address: contractContext.lotteryAddress,
     abi: deployedContracts[chains.sepolia.id].Lottery.abi,
     functionName: "purchaseTokens",
@@ -72,6 +73,7 @@ export default function PurchaseTokens({ className }: { className?: string }) {
               Buy Tokens
             </button>
           </div>
+          <ErrorBlock className="text-center mt-4" error={error} />
           <TransactionList className="mt-8" txHashes={txHashes} />
         </div>
       </div>
