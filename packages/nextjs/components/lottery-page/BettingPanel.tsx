@@ -1,40 +1,24 @@
-"use client";
-
-import type { NextPage } from "next";
+import type { NextComponentType } from "next";
 import BalanceOfTokens from "~~/components/viem/BalanceOfTokens";
 import Claim from "~~/components/viem/Claim";
 import MakeBet from "~~/components/viem/MakeBet";
 import PriceWithdraw from "~~/components/viem/PriceWithdraw";
 import PurchaseTokens from "~~/components/viem/PurchaseTokens";
 
-const BettingPanel: NextPage = () => {
+const BettingPanel: NextComponentType = () => {
   return (
-    <>
-      <div className="col-span-3">
-        <h1 className="text-center">Player space</h1>
+    <div className="cardrelative m-4 pb-10">
+      <div className="card-title">
+        <h2 className="text-2xl my-4 indent-10">Player space</h2>
       </div>
-      <div className="col-span-3 grid grid-cols-3 gap-4">
-        <div className="col-span-1">
-          <PurchaseTokens />
-        </div>
-        <div className="col-span-2">
-          <MakeBet />
-        </div>
-      </div>
-      <div className="col-span-3 grid grid-cols-3 gap-4">
-        <div className="col-span-1">
-          <BalanceOfTokens />
-        </div>
-        <div className="col-span-2">
-          <PriceWithdraw />
-        </div>
-      </div>
-      <div className="col-span-3 grid grid-cols-3 gap-4">
-        <div className="col-span-1"></div>
+      <div className="card-body">
+        <PurchaseTokens />
+        <MakeBet />
+        <BalanceOfTokens />
+        <PriceWithdraw />
         <Claim />
-        <div className="col-span-1"></div>
       </div>
-    </>
+    </div>
   );
 };
 

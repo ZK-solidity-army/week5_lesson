@@ -22,7 +22,7 @@ export default function PurchaseTokens() {
   };
 
   return (
-    <div className="card bg-base-100 shadow-xl mt-2">
+    <div className="card mt-2">
       <div className="card-body">
         <h2 className="card-title">Purchase tokens</h2>
         <label className="label">
