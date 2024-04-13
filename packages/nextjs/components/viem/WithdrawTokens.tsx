@@ -1,22 +1,28 @@
 "use client";
 
-import { useState } from "react";
-import Lottie from "lottie-react";
+import { useCallback, useRef, useState } from "react";
+import Lottie, { LottieRef } from "lottie-react";
 import prize from "~~/assets/lottie/prize.json";
 
 export default function WithdrawTokens({ className }: { className?: string }) {
   const [amount, setAmount] = useState<string>("");
   const [isLoading, setLoading] = useState(false);
   const [requestError, setRequestError] = useState<string | null>(null);
+  const lottieRef: LottieRef = useRef(null);
 
   console.log(isLoading);
   console.log(requestError);
 
-  const onClick = async () => {
+  const onClick = useCallback(async () => {
     if (!amount) return;
 
+    lottieRef.current && lottieRef.current.goToAndPlay(5, true);
     setLoading(true);
-  };
+  }, [amount, setLoading, lottieRef]);
+
+  const onLottieClick = useCallback(() => {
+    lottieRef.current && lottieRef.current.goToAndPlay(18, true);
+  }, [lottieRef]);
 
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setRequestError(null);
@@ -35,7 +41,13 @@ export default function WithdrawTokens({ className }: { className?: string }) {
         <span className="label-text">Enter amount of tokens to withdraw</span>
       </label>
       <div className="md:w-56">
-        <Lottie animationData={prize} className="w-56 h-56 mx-auto" loop={false} />
+        <Lottie
+          animationData={prize}
+          className="w-56 h-56 mx-auto"
+          loop={false}
+          onClick={onLottieClick}
+          lottieRef={lottieRef}
+        />
         <div className="w-full">
           <input
             type="text"
