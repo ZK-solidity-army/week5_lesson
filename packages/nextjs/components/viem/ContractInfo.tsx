@@ -4,8 +4,12 @@ import EthIcon from "../svg/EthIcon";
 import BalanceOfTokens from "./BalanceOfTokens";
 import { blo } from "blo";
 import { twMerge } from "tailwind-merge";
-import { useAccount, useBalance } from "wagmi";
+import { formatEther } from "viem";
+import { useAccount, useBalance, useContractRead } from "wagmi";
+import * as chains from "wagmi/chains";
+import { TrophyIcon } from "@heroicons/react/24/outline";
 import { ContractContext } from "~~/context";
+import deployedContracts from "~~/contracts/deployedContracts";
 
 export default function ContractInfo({ className }: { className?: string }) {
   const account = useAccount();
@@ -13,6 +17,14 @@ export default function ContractInfo({ className }: { className?: string }) {
   const contractContext = useContext(ContractContext);
 
   const tokenSymbol = contractContext.tokenSymbol || "??";
+
+  const { data: prizePool } = useContractRead({
+    address: contractContext.lotteryAddress,
+    abi: deployedContracts[chains.sepolia.id].Lottery.abi,
+    functionName: "prize",
+    args: [account.address as "string"],
+    watch: true,
+  });
 
   if (!account || !account.isConnected) return null;
   if (!account.address) return null;
@@ -36,6 +48,8 @@ export default function ContractInfo({ className }: { className?: string }) {
 
         <div className="stat">
           <div className="stat-figure text-accent">
+            <TrophyIcon className="inline-block w-7 h-7 stroke-current stroke-2" />
+            {/*
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -44,9 +58,10 @@ export default function ContractInfo({ className }: { className?: string }) {
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
             </svg>
+            */}
           </div>
           <div className="stat-title">Won</div>
-          <div className="stat-value text-accent">31</div>
+          <div className="stat-value text-accent">{prizePool ? formatEther(prizePool) : 0}</div>
           <div className="stat-desc">How many {tokenSymbol} you won</div>
         </div>
 
