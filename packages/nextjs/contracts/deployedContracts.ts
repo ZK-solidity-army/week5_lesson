@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   11155111: {
     Lottery: {
-      address: "0x4beb1E1C266bAaD01A7379115Bb093b0c6907c76",
+      address: "0x0e5Fc17F9aFE1D986B1a21843fe9D7eB7235737B",
       abi: [
         {
           inputs: [

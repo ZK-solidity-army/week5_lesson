@@ -1,2 +1,1 @@
-export const LOTTERY_TOKEN_ADDRESS = process.env.NEXT_PUBLIC_LOTTERY_TOKEN_ADDRESS;
-export const LOTTERY_ADDRESS = process.env.NEXT_PUBLIC_LOTTERY_ADDRESS;
+export const LOTTERY_ADDRESSES = JSON.parse(process.env.NEXT_PUBLIC_LOTTERY_ADDRESSES || "[]") as `0x${string}`[];

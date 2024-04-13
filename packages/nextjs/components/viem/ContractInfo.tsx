@@ -1,13 +1,18 @@
+import { useContext } from "react";
 import Image from "next/image";
 import EthIcon from "../svg/EthIcon";
 import BalanceOfTokens from "./BalanceOfTokens";
 import { blo } from "blo";
 import { twMerge } from "tailwind-merge";
 import { useAccount, useBalance } from "wagmi";
+import { ContractContext } from "~~/context";
 
 export default function ContractInfo({ className }: { className?: string }) {
   const account = useAccount();
   const { data: ethBalance } = useBalance({ address: account.address, watch: true });
+  const contractContext = useContext(ContractContext);
+
+  const tokenSymbol = contractContext.tokenSymbol || "??";
 
   if (!account || !account.isConnected) return null;
   if (!account.address) return null;
@@ -42,7 +47,7 @@ export default function ContractInfo({ className }: { className?: string }) {
           </div>
           <div className="stat-title">Won</div>
           <div className="stat-value text-accent">31</div>
-          <div className="stat-desc">How many G9LT you won</div>
+          <div className="stat-desc">How many {tokenSymbol} you won</div>
         </div>
 
         <div className="stat">

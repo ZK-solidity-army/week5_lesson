@@ -1,30 +1,24 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import TransactionList from "./TransactionList";
 import { twMerge } from "tailwind-merge";
 import { parseEther } from "viem";
-import { useContractRead, useContractWrite } from "wagmi";
+import { useContractWrite } from "wagmi";
 import * as chains from "wagmi/chains";
-import { LOTTERY_ADDRESS } from "~~/config";
+import { ContractContext } from "~~/context";
 import deployedContracts from "~~/contracts/deployedContracts";
 import { formatEth } from "~~/utils/formatEth";
-
-// TODO: retrieve decimals from contract
-const DECIMALS = 18;
 
 export default function PurchaseTokens({ className }: { className?: string }) {
   const [amount, setAmount] = useState<string>("");
   const [txHashes, setTxHashes] = useState<string[]>([]);
 
-  const { data: purchaseRatio } = useContractRead({
-    address: LOTTERY_ADDRESS,
-    abi: deployedContracts[chains.sepolia.id].Lottery.abi,
-    functionName: "purchaseRatio",
-  });
+  const contractContext = useContext(ContractContext);
+  const tokenSymbol = contractContext.tokenSymbol || "'Unknown'";
 
   const { isLoading, write } = useContractWrite({
-    address: LOTTERY_ADDRESS,
+    address: contractContext.lotteryAddress,
     abi: deployedContracts[chains.sepolia.id].Lottery.abi,
     functionName: "purchaseTokens",
     onSuccess: useCallback(
@@ -62,9 +56,11 @@ export default function PurchaseTokens({ className }: { className?: string }) {
               onChange={onChange}
             />
           </div>
-          {amount && purchaseRatio ? (
+          {amount && contractContext.purchaseRatio ? (
             <div className="text-neutral-500 text-sm my-3">
-              You will receive {getG9LTAmount(amount, purchaseRatio)} G9LT tokens
+              You will receive{" "}
+              {getTokenAmount(amount, contractContext.purchaseRatio, contractContext.tokenDecimals || 0)} {tokenSymbol}{" "}
+              tokens
             </div>
           ) : null}
           <div>
@@ -79,7 +75,7 @@ export default function PurchaseTokens({ className }: { className?: string }) {
   );
 }
 
-const getG9LTAmount = (_amount: string, ratio: bigint) => {
+const getTokenAmount = (_amount: string, ratio: bigint, decimals: number) => {
   let amount: bigint;
   try {
     amount = parseEther(_amount);
@@ -88,7 +84,7 @@ const getG9LTAmount = (_amount: string, ratio: bigint) => {
   }
 
   console.log(BigInt(amount) * ratio);
-  console.log(amount, ratio, formatEth(BigInt(amount) * ratio, DECIMALS));
+  console.log(amount, ratio, formatEth(BigInt(amount) * ratio, decimals));
 
-  return formatEth(BigInt(amount) * ratio, DECIMALS);
+  return formatEth(BigInt(amount) * ratio, decimals);
 };

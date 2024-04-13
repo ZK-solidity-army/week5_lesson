@@ -1,35 +1,47 @@
+import { useContext } from "react";
 import { useContractRead } from "wagmi";
 import * as chains from "wagmi/chains";
 import TokenIcon from "~~/components/svg/TokenIcon";
-import { LOTTERY_TOKEN_ADDRESS } from "~~/config";
+import { ContractContext } from "~~/context";
 import deployedContracts from "~~/contracts/deployedContracts";
 import { formatEth } from "~~/utils/formatEth";
 
-// TODO: retrieve decimals from contract
-const DECIMALS = 18;
-
 export default function BalanceOfTokens({ address }: { address: `0x${string}` }) {
+  const contractContext = useContext(ContractContext);
+  const tokenSymbol = contractContext.tokenSymbol || "??";
+  const tokenDecimals = contractContext.tokenDecimals || 0;
+  const tokenAddress = contractContext.tokenAddress;
+
   return (
     <div className="stat">
       <div className="stat-figure text-secondary">
         <TokenIcon className="inline-block w-8 h-8 stroke-current" />
       </div>
       <div className="stat-title">Lottery Token</div>
-      <div className="stat-value text-secondary">{address ? <Balance address={address} /> : "..."}</div>
-      <div className="stat-desc">Amount of G9LT token</div>
+      <div className="stat-value text-secondary">
+        {address ? <Balance tokenAddress={tokenAddress} address={address} decimals={tokenDecimals} /> : "..."}
+      </div>
+      <div className="stat-desc">Amount of {tokenSymbol} token</div>
     </div>
   );
 }
 
-function Balance({ address }: { address: `0x${string}` }) {
+function Balance({
+  tokenAddress,
+  address,
+  decimals,
+}: {
+  tokenAddress?: `0x${string}`;
+  address: `0x${string}`;
+  decimals: number;
+}) {
   const { data } = useContractRead({
-    address: LOTTERY_TOKEN_ADDRESS,
+    address: tokenAddress,
     abi: deployedContracts[chains.sepolia.id].LotteryToken.abi,
     functionName: "balanceOf",
     args: [address],
     watch: true,
   });
-  const formattedData = data ? formatEth(data, DECIMALS) : 0;
-  console.log(data, formattedData);
+  const formattedData = data ? formatEth(data, decimals) : 0;
   return <>{formattedData}</>;
 }
