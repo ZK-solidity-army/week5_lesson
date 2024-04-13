@@ -38,7 +38,8 @@ const Home: NextPage = () => {
       <BettingPanel />
 
       <div className="px-4">
-        <div tabIndex={0} className="collapse collapse-arrow border border-base-300 bg-base-200 max-w-[1000px] mx-auto">
+        {/* TODO: move to AdminPanel */}
+        <div tabIndex={0} className="collapse collapse-arrow bg-base-200 max-w-[1000px] mx-auto">
           <input type="checkbox" className="peer" />
           <div className="collapse-title text-xl font-medium">READONLY: Admin panel</div>
           <div className="collapse-content">

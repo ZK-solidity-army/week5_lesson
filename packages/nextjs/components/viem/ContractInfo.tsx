@@ -15,7 +15,7 @@ export default function ContractInfo({ className }: { className?: string }) {
   return (
     <div className="mx-4 md:mx-0">
       <div className={twMerge("stats shadow text-left stats-vertical lg:stats-horizontal w-full md:w-auto", className)}>
-        <div className="stat block">
+        <div className="stat">
           <div className="stat-figure text-primary">
             <EthIcon className="inline-block w-8 h-8 stroke-current" />
           </div>
