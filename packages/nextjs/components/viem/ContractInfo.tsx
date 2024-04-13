@@ -26,7 +26,7 @@ export default function ContractInfo({ className }: { className?: string }) {
           <div className="stat-desc">Your sepolia network balance</div>
         </div>
 
-        <BalanceOfTokens />
+        <BalanceOfTokens address={account.address as `0x{string}`} />
 
         <div className="stat">
           <div className="stat-figure text-accent">

@@ -8,7 +8,7 @@ const deployLotteryContract: DeployFunction = async function (hre: HardhatRuntim
 
   await deploy("Lottery", {
     from: deployer,
-    args: ["Group 9 Lottery Token", "G9LT", 10 ** 15, 10, 1],
+    args: ["Group 9 Lottery Token", "G9LT", 1500, 10n ** 16n, 10n ** 15n],
     log: true,
     autoMine: true,
   });
@@ -20,8 +20,8 @@ const deployLotteryContract: DeployFunction = async function (hre: HardhatRuntim
   const symbol = await lotteryTokenContract.symbol();
   console.log("   Symbol: ", symbol);
   console.log("   Purchase ration: ", await lotteryContract.purchaseRatio());
-  console.log(`   Bet price: ${await lotteryContract.betPrice()} ${symbol}`);
-  console.log(`   Bet fee: ${await lotteryContract.betFee()} ${symbol}`);
+  console.log(`   Bet price: ${(await lotteryContract.betPrice()).toString()} ${symbol}`);
+  console.log(`   Bet fee: ${(await lotteryContract.betFee()).toString()} ${symbol}`);
   console.log("   LotteryToken address", await lotteryContract.paymentToken());
 };
 
