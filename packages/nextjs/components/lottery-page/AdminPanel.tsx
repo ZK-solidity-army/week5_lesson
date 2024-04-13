@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { NextPage } from "next";
 import { twMerge } from "tailwind-merge";
@@ -10,6 +10,7 @@ import CloseBets from "~~/components/viem/CloseBets";
 import OpenBets from "~~/components/viem/OpenBets";
 import { LOTTERY_ADDRESSES } from "~~/config";
 import { ContractContext } from "~~/context";
+import { useOutsideClick } from "~~/hooks/scaffold-eth";
 import { getBlockExplorerAddressLink } from "~~/utils/scaffold-eth";
 import { middleTruncate } from "~~/utils/truncate";
 
@@ -22,6 +23,15 @@ const AdminPanel: NextPage = () => {
     "flex flex-row justify-between items-center my-2",
   );
   const dotItemClassName = "bg-base-200 relative px-2";
+  const dropdownRef = useRef(null);
+  useOutsideClick(
+    dropdownRef,
+    useCallback(() => {
+      if (dropdownRef.current) {
+        (dropdownRef.current as any).open = false;
+      }
+    }, [dropdownRef]),
+  );
 
   const defaultLotteryContractAddress = LOTTERY_ADDRESSES.length ? LOTTERY_ADDRESSES[0] : "";
   const [lotteryContractAddress, setLotteryContractAddress] = useState<string>(() => {
@@ -45,6 +55,10 @@ const AdminPanel: NextPage = () => {
           ...contractContext,
           lotteryAddress: address,
         });
+      }
+
+      if (dropdownRef.current) {
+        (dropdownRef.current as any).open = false;
       }
     },
     [setLotteryContractAddress, contractContext],
@@ -73,12 +87,12 @@ const AdminPanel: NextPage = () => {
         <div className="my-2">You can point any address for Lottery smartcontract</div>
         <input
           type="text"
-          className="input w-96 text-sm"
+          className="input sm:w-96 text-sm"
           value={lotteryContractAddress}
           onChange={onChangeContract}
         ></input>
 
-        <details className="dropdown">
+        <details className="dropdown" ref={dropdownRef}>
           <summary className="btn m-1 shadow-none">
             {middleTruncate(lotteryContractAddress, 20)}
             <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -137,6 +151,12 @@ const AdminPanel: NextPage = () => {
           <div className={dotClassName}>
             <div className={dotItemClassName}>Token symbol</div>
             <div className={dotItemClassName}>{contractContext.tokenSymbol || "Unknown"}</div>
+          </div>
+          <div className={dotClassName}>
+            <div className={dotItemClassName}>Purchase ratio</div>
+            <div className={dotItemClassName}>
+              {contractContext.purchaseRatio ? `1/${contractContext.purchaseRatio}` : "Unknown"}
+            </div>
           </div>
         </div>
       </div>
