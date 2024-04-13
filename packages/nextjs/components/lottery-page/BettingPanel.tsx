@@ -1,40 +1,26 @@
-"use client";
-
-import type { NextPage } from "next";
-import BalanceOfTokens from "~~/components/viem/BalanceOfTokens";
-import Claim from "~~/components/viem/Claim";
+import BurnTokens from "../viem/BurnTokens";
+import WithdrawTokens from "../viem/WithdrawTokens";
+import type { NextComponentType } from "next";
 import MakeBet from "~~/components/viem/MakeBet";
-import PriceWithdraw from "~~/components/viem/PriceWithdraw";
-import PurchaseTokens from "~~/components/viem/PurchaseTokens";
 
-const BettingPanel: NextPage = () => {
+const BettingPanel: NextComponentType = () => {
   return (
-    <>
-      <div className="col-span-3">
-        <h1 className="text-center">Player space</h1>
+    <div className="px-4">
+      <div className="card border dark:border-base-300 bg-base-100 m-4 py-2 mt-12 max-w-[1000px] mx-auto">
+        {/*
+      <div className="card-title">
+        <h2 className="text-2xl my-4 indent-10">Player space</h2>
       </div>
-      <div className="col-span-3 grid grid-cols-3 gap-4">
-        <div className="col-span-1">
-          <PurchaseTokens />
-        </div>
-        <div className="col-span-2">
-          <MakeBet />
-        </div>
-      </div>
-      <div className="col-span-3 grid grid-cols-3 gap-4">
-        <div className="col-span-1">
-          <BalanceOfTokens />
-        </div>
-        <div className="col-span-2">
-          <PriceWithdraw />
+      */}
+        <div className="card-body md:flex md:flex-row justify-around items-center">
+          <MakeBet className="my-8" />
+          <div className="divider md:divider-horizontal"></div>
+          <WithdrawTokens className="my-8" />
+          <div className="divider md:divider-horizontal"></div>
+          <BurnTokens className="my-8" />
         </div>
       </div>
-      <div className="col-span-3 grid grid-cols-3 gap-4">
-        <div className="col-span-1"></div>
-        <Claim />
-        <div className="col-span-1"></div>
-      </div>
-    </>
+    </div>
   );
 };
 
