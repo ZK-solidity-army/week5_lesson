@@ -40,6 +40,7 @@ export default function PurchaseTokens({ className }: { className?: string }) {
               Buy Tokens
             </button>
           </div>
+          {/* TODO: write ratio */}
         </div>
       </div>
     </div>
