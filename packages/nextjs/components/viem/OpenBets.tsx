@@ -22,22 +22,24 @@ export default function OpenBets() {
   };
 
   return (
-    <div className="card bg-base-100 shadow-xl mt-2">
-      <div className="card-body">
-        <h2 className="card-title">Open Bet</h2>
-        <div className="flex flex-row items-center">
-          <div className="w-56 my-1">
+    <div>
+      <div>
+        <label className="label">
+          <span className="label-text">Close bets in X hours</span>
+        </label>
+        <div className="md:w-56">
+          <div>
             <input
               type="text"
-              placeholder="123456..."
-              className="input input-bordered w-full max-w-xs"
+              placeholder="Enter amount of hours"
+              className="input input-bordered w-full"
               value={amount}
               onChange={onChange}
             />
           </div>
-          <div className="ml-4">
-            <button className="btn" onClick={onClick}>
-              Open bet.
+          <div className="mt-2">
+            <button className="btn btn-neutral w-full" onClick={onClick}>
+              Open Bets
             </button>
           </div>
         </div>

@@ -6,19 +6,18 @@ import OpenBets from "~~/components/viem/OpenBets";
 
 const AdminPanel: NextPage = () => {
   return (
-    <>
+    <div className="card">
+      {/*
       <div className="col-span-3">
         <h1 className="text-center ">Pit Boss menu</h1>
       </div>
-      <div className="col-span-3 grid grid-cols-2 gap-4">
-        <div className="col-span-1">
-          <OpenBets />
-        </div>
-        <div className="col-span-1">
-          <CloseBets />
-        </div>
+      */}
+      <div className="card-body md:flex md:flex-row md:justify-around md:items-end">
+        <OpenBets />
+        <div className="divider md:divider-horizontal"></div>
+        <CloseBets />
       </div>
-    </>
+    </div>
   );
 };
 
