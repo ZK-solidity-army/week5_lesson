@@ -100,6 +100,9 @@ contract Lottery is Ownable {
             times--;
             _slots.push(msg.sender);
         }
+
+        ownerPool += betFee;
+        prizePool += betPrice;
         paymentToken.transferFrom(msg.sender, address(this), totalFee + totalPrize);
     }
 
