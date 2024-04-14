@@ -166,6 +166,24 @@ const AdminPanel: NextPage = () => {
                 }`
               : "Unknown"}
           </InfoRow>
+          <InfoRow title="Prize pool">
+            {contractContext.prizePool &&
+            typeof contractContext.tokenDecimals !== "undefined" &&
+            contractContext.tokenSymbol
+              ? `${formatUnits(contractContext.prizePool, contractContext.tokenDecimals, 5)} ${
+                  contractContext.tokenSymbol
+                }`
+              : 0}
+          </InfoRow>
+          <InfoRow title="Owner pool">
+            {contractContext.ownerPool &&
+            typeof contractContext.tokenDecimals !== "undefined" &&
+            contractContext.tokenSymbol
+              ? `${formatUnits(contractContext.ownerPool, contractContext.tokenDecimals, 5)} ${
+                  contractContext.tokenSymbol
+                }`
+              : 0}
+          </InfoRow>
           <InfoRow title="Status">
             {typeof contractContext.betsOpen !== "undefined" ? (
               contractContext.betsOpen ? (
@@ -177,6 +195,11 @@ const AdminPanel: NextPage = () => {
               "Unknown"
             )}
           </InfoRow>
+          {contractContext.betsOpen && contractContext.betsClosingTime ? (
+            <InfoRow title="Bets closing time">
+              {new Date(Number(contractContext.betsClosingTime) * 1000).toLocaleString()}
+            </InfoRow>
+          ) : null}
           <InfoRow title="Is owner">
             {typeof contractContext.ownerAddress !== "undefined" ? (
               isOwner() ? (
