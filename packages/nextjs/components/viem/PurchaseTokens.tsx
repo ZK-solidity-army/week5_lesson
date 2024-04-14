@@ -3,12 +3,13 @@
 import { useCallback, useContext, useState } from "react";
 import TransactionList from "./TransactionList";
 import { twMerge } from "tailwind-merge";
-import { formatUnits, parseEther, parseUnits } from "viem";
+import { parseEther, parseUnits } from "viem";
 import { useContractWrite } from "wagmi";
 import * as chains from "wagmi/chains";
 import ErrorBlock from "~~/components/Error";
 import { ContractContext } from "~~/context";
 import deployedContracts from "~~/contracts/deployedContracts";
+import formatUnits from "~~/utils/formatUnits";
 
 export default function PurchaseTokens({ className }: { className?: string }) {
   const [amount, setAmount] = useState<string>("");
@@ -78,7 +79,7 @@ export default function PurchaseTokens({ className }: { className?: string }) {
   return (
     <div className={twMerge("card mt-2", className)}>
       <div className="card-body">
-        <div className="md:w-[310px]">
+        <div className="md:w-[19.375rem]">
           <div className="w-full mb-2 relative">
             <span className="absolute right-3 top-4 text-2xl text-neutral-500">{tokenSymbol}</span>
             <input
@@ -92,8 +93,8 @@ export default function PurchaseTokens({ className }: { className?: string }) {
           {amount && contractContext.purchaseRatio ? (
             <div className="text-neutral-500 text-sm my-3">
               It costs{" "}
-              {formatUnits(getEthAmount(amount, contractContext.purchaseRatio), contractContext.tokenDecimals || 0)} SEP
-              to buy
+              {formatUnits(getEthAmount(amount, contractContext.purchaseRatio), contractContext.tokenDecimals || 0, 5)}{" "}
+              SEP to buy
             </div>
           ) : null}
           <div>

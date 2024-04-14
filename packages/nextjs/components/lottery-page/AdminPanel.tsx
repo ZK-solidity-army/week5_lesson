@@ -18,7 +18,7 @@ const AdminPanel: NextPage = () => {
   const contractContext = useContext(ContractContext);
   const dotClassName = twMerge(
     "relative",
-    "before:content-[''] before:absolute before:w-full before:h-0 before:border-b-[2px] before:border-dotted",
+    "before:content-[''] before:absolute before:w-full before:h-0 before:border-b-[0.125rem] before:border-dotted",
     "before:leading-0 before:bottom-1 before:border-base-content before:z-0",
     "flex flex-row justify-between items-center my-2",
   );
@@ -111,7 +111,7 @@ const AdminPanel: NextPage = () => {
             ))}
           </ul>
         </details>
-        <div className="max-w-[500px] mx-auto my-5 text-sm">
+        <div className="max-w-[31.25rem] mx-auto my-5 text-sm">
           <div className={dotClassName}>
             <div className={dotItemClassName}>Lottery address</div>
             <div className={dotItemClassName}>
@@ -161,9 +161,9 @@ const AdminPanel: NextPage = () => {
         </div>
       </div>
       <div className="card-body md:flex md:flex-row md:justify-around">
-        <OpenBets className="md:w-[300px]" />
+        <OpenBets className="md:w-[18.75rem]" />
         <div className="divider md:divider-horizontal"></div>
-        <CloseBets className="md:w-[300px]" />
+        <CloseBets className="md:w-[18.75rem]" />
       </div>
     </div>
   );
