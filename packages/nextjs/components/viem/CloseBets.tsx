@@ -24,9 +24,7 @@ export default function CloseBets({ className }: { className?: string }) {
   });
 
   const onSubmit = useCallback(() => {
-    write({
-      args: [],
-    });
+    write();
   }, [write]);
 
   return (
