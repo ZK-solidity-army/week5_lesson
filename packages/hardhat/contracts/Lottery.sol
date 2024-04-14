@@ -95,15 +95,14 @@ contract Lottery is Ownable {
         require(times > 0);
 
         uint256 totalFee =  betFee * times;
-        uint256 totalPrize = betPrice * times;
+        uint256 totalPrice = betPrice * times;
         while (times > 0) {
             times--;
             _slots.push(msg.sender);
         }
-
-        ownerPool += betFee;
-        prizePool += betPrice;
-        paymentToken.transferFrom(msg.sender, address(this), totalFee + totalPrize);
+        ownerPool += totalFee;
+        prizePool += totalPrice;
+        paymentToken.transferFrom(msg.sender, address(this), totalFee + totalPrice);
     }
 
     /// @notice Closes the lottery and calculates the prize, if any
