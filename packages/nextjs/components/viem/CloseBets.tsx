@@ -30,7 +30,7 @@ export default function CloseBets({ className }: { className?: string }) {
   return (
     <div className={className}>
       <div>
-        <div className="mt-2">
+        <div className="md:mt-[5.8rem]">
           <button className="btn btn-neutral w-full" onClick={onSubmit}>
             Close bets
           </button>
