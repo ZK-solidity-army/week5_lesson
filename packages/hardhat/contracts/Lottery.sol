@@ -95,7 +95,6 @@ contract Lottery is Ownable {
         require(times > 0);
         uint256 totalFees = betFee * times;
         uint256 totalBetPrice = betPrice * times;
-        address[] memory slotsToPush = new uint8[](times);
         while (times > 0) {
             slotsToPush[times - 1] = msg.sender;
             times--;
