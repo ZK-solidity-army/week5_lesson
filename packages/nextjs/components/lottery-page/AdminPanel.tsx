@@ -160,10 +160,10 @@ const AdminPanel: NextPage = () => {
           </div>
         </div>
       </div>
-      <div className="card-body md:flex md:flex-row md:justify-around md:items-end">
-        <OpenBets />
+      <div className="card-body md:flex md:flex-row md:justify-around">
+        <OpenBets className="md:w-[300px]" />
         <div className="divider md:divider-horizontal"></div>
-        <CloseBets />
+        <CloseBets className="md:w-[300px]" />
       </div>
     </div>
   );

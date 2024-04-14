@@ -1,32 +1,52 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useContext, useRef, useState } from "react";
+import TransactionList from "./TransactionList";
 import Lottie, { LottieRef } from "lottie-react";
+import { useContractWrite } from "wagmi";
+import * as chains from "wagmi/chains";
 import bet from "~~/assets/lottie/bet.json";
+import ErrorBlock from "~~/components/Error";
+import { ContractContext } from "~~/context";
+import deployedContracts from "~~/contracts/deployedContracts";
 
 export default function MakeBet({ className }: { className?: string }) {
   const [amount, setAmount] = useState<string>("1");
-  const [isLoading, setLoading] = useState(false);
-  const [requestError, setRequestError] = useState<string | null>(null);
+  const [txHashes, setTxHashes] = useState<string[]>([]);
+
   const lottieRef: LottieRef = useRef(null);
+  const contractContext = useContext(ContractContext);
 
-  console.log(isLoading);
-  console.log(requestError);
+  const { write, error } = useContractWrite({
+    address: contractContext.lotteryAddress,
+    abi: deployedContracts[chains.sepolia.id].Lottery.abi,
+    functionName: "betMany",
+    onSuccess: useCallback(
+      (data: { hash: string }) => {
+        setTxHashes(prev => [data.hash, ...prev]);
+      },
+      [setTxHashes],
+    ),
+  });
 
-  const onClick = useCallback(async () => {
+  const onSubmit = useCallback(async () => {
     if (!amount) return;
-    setLoading(true);
+    write({
+      args: [BigInt(amount)],
+    });
     lottieRef.current && lottieRef.current.goToAndPlay(5, true);
-  }, [amount, setLoading]);
+  }, [lottieRef, amount, write]);
 
   const onLottieClick = useCallback(() => {
     lottieRef.current && lottieRef.current.goToAndPlay(10, true);
   }, [lottieRef]);
 
-  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRequestError(null);
-    setAmount(e.target.value);
-  };
+  const onChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setAmount(e.target.value);
+    },
+    [setAmount],
+  );
 
   return (
     <div className={className}>
@@ -53,18 +73,13 @@ export default function MakeBet({ className }: { className?: string }) {
             onChange={onChange}
           />
         </div>
-        <button className="btn w-full mt-2" onClick={onClick}>
+        <button className="btn w-full mt-2" onClick={onSubmit}>
           🎰 Bet
         </button>
       </div>
 
-      {/* TODO: move to a separate component */}
-      {/*
-        <div className="mt-2">
-          <h1>⚠️ Result:</h1>
-          <p>[text result]</p>
-        </div>
-        */}
+      <ErrorBlock className="md:w-56 text-center mt-5" error={error} />
+      <TransactionList className="mt-8" txHashes={txHashes} size={20} />
     </div>
   );
 }

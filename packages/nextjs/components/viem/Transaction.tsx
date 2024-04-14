@@ -5,7 +5,7 @@ import { useWaitForTransaction } from "wagmi";
 import { ArrowPathIcon, CheckIcon } from "@heroicons/react/24/outline";
 import { getBlockExplorerTxLink } from "~~/utils/scaffold-eth";
 
-export default function Transaction({ txHash }: { txHash: `0x${string}` }) {
+export default function Transaction({ txHash, size }: { txHash: `0x${string}`; size?: number }) {
   const [isSuccess, setIsSuccess] = useState(false);
 
   useWaitForTransaction({
@@ -25,7 +25,7 @@ export default function Transaction({ txHash }: { txHash: `0x${string}` }) {
           <ArrowPathIcon className="w-5 h-5 inline-block" />
         )}{" "}
       </span>
-      <span className="align-middle">{truncate(txHash, 30)}</span>
+      <span className="align-middle">{truncate(txHash, size || 30)}</span>
       {/*
       {isSuccess ? "✅": "⏳ "} {truncate(txHash, 20)}
       */}

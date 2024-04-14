@@ -12,7 +12,7 @@ const BettingPanel: NextComponentType = () => {
         <h2 className="text-2xl my-4 indent-10">Player space</h2>
       </div>
       */}
-        <div className="card-body md:flex md:flex-row justify-around items-center">
+        <div className="card-body md:flex md:flex-row justify-around">
           <MakeBet className="my-8" />
           <div className="divider md:divider-horizontal"></div>
           <WithdrawTokens className="my-8" />

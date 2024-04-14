@@ -1,33 +1,50 @@
-"use client";
+import { useCallback, useContext, useState } from "react";
+import TransactionList from "./TransactionList";
+import { useContractWrite } from "wagmi";
+import * as chains from "wagmi/chains";
+import ErrorBlock from "~~/components/Error";
+import { ContractContext } from "~~/context";
+import deployedContracts from "~~/contracts/deployedContracts";
 
-import { useState } from "react";
-
-export default function OpenBets() {
+export default function OpenBets({ className }: { className?: string }) {
   const [amount, setAmount] = useState<string>("");
-  const [isLoading, setLoading] = useState(false);
-  const [requestError, setRequestError] = useState<string | null>(null);
+  const [txHashes, setTxHashes] = useState<string[]>([]);
 
-  console.log(isLoading);
-  console.log(requestError);
+  const contractContext = useContext(ContractContext);
 
-  const onClick = async () => {
-    if (!amount) return;
+  const { write, error } = useContractWrite({
+    address: contractContext.lotteryAddress,
+    abi: deployedContracts[chains.sepolia.id].Lottery.abi,
+    functionName: "openBets",
+    onSuccess: useCallback(
+      (data: { hash: string }) => {
+        setTxHashes(prev => [data.hash, ...prev]);
+      },
+      [setTxHashes],
+    ),
+  });
 
-    setLoading(true);
-  };
+  const onSubmit = useCallback(() => {
+    const amountNum = parseInt(amount, 10);
+    if (isNaN(amountNum)) return;
+
+    const timestamp = new Date().valueOf() + amountNum * 3600;
+    write({
+      args: [BigInt(timestamp)],
+    });
+  }, [amount, write]);
 
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRequestError(null);
     setAmount(e.target.value);
   };
 
   return (
-    <div>
+    <div className={className}>
       <div>
         <label className="label">
           <span className="label-text">Close bets in X hours</span>
         </label>
-        <div className="md:w-56">
+        <div>
           <div>
             <input
               type="text"
@@ -38,11 +55,14 @@ export default function OpenBets() {
             />
           </div>
           <div className="mt-2">
-            <button className="btn btn-neutral w-full" onClick={onClick}>
+            <button className="btn btn-neutral w-full" onClick={onSubmit}>
               Open Bets
             </button>
           </div>
         </div>
+
+        <ErrorBlock className="text-center mt-5" error={error} />
+        <TransactionList className="mt-8" txHashes={txHashes} />
       </div>
     </div>
   );

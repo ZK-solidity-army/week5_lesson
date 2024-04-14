@@ -4,10 +4,10 @@ import EthIcon from "../svg/EthIcon";
 import BalanceOfTokens from "./BalanceOfTokens";
 import { blo } from "blo";
 import { twMerge } from "tailwind-merge";
-import { formatEther } from "viem";
+import { formatEther, formatUnits } from "viem";
 import { useAccount, useBalance, useContractRead } from "wagmi";
 import * as chains from "wagmi/chains";
-import { TrophyIcon } from "@heroicons/react/24/outline";
+import { CurrencyDollarIcon, TrophyIcon } from "@heroicons/react/24/outline";
 import { ContractContext } from "~~/context";
 import deployedContracts from "~~/contracts/deployedContracts";
 
@@ -16,9 +16,10 @@ export default function ContractInfo({ className }: { className?: string }) {
   const { data: ethBalance } = useBalance({ address: account.address, watch: true });
   const contractContext = useContext(ContractContext);
 
-  const tokenSymbol = contractContext.tokenSymbol || "??";
+  let tokenPrice = "...";
 
-  const { data: prizePool } = useContractRead({
+  //TODO: merge requests in one
+  const { data: prize } = useContractRead({
     address: contractContext.lotteryAddress,
     abi: deployedContracts[chains.sepolia.id].Lottery.abi,
     functionName: "prize",
@@ -26,8 +27,19 @@ export default function ContractInfo({ className }: { className?: string }) {
     watch: true,
   });
 
+  const { data: prizePool } = useContractRead({
+    address: contractContext.lotteryAddress,
+    abi: deployedContracts[chains.sepolia.id].Lottery.abi,
+    functionName: "prizePool",
+    watch: true,
+  });
+
   if (!account || !account.isConnected) return null;
   if (!account.address) return null;
+
+  if (contractContext.betPrice) {
+    tokenPrice = formatUnits(contractContext.betPrice, contractContext.tokenDecimals || 0);
+  }
 
   return (
     <div className="mx-4 md:mx-0">
@@ -48,6 +60,15 @@ export default function ContractInfo({ className }: { className?: string }) {
 
         <div className="stat">
           <div className="stat-figure text-accent">
+            <CurrencyDollarIcon className="inline-block w-7 h-7 stroke-current stroke-1" />
+          </div>
+          <div className="stat-title">Bet price</div>
+          <div className="stat-value text-accent">{tokenPrice}</div>
+          <div className="stat-desc">Min bet price</div>
+        </div>
+
+        <div className="stat">
+          <div className="stat-figure text-warning">
             <TrophyIcon className="inline-block w-7 h-7 stroke-current stroke-2" />
             {/*
             <svg
@@ -60,9 +81,11 @@ export default function ContractInfo({ className }: { className?: string }) {
             </svg>
             */}
           </div>
-          <div className="stat-title">Won</div>
-          <div className="stat-value text-accent">{prizePool ? formatEther(prizePool) : 0}</div>
-          <div className="stat-desc">How many {tokenSymbol} you won</div>
+          <div className="stat-title">Price pool</div>
+          <div className="stat-value text-warning">
+            {prizePool ? formatUnits(prizePool, contractContext.tokenDecimals || 0) : 0}
+          </div>
+          <div className="stat-desc">Total prize pool</div>
         </div>
 
         <div className="stat">
@@ -78,9 +101,9 @@ export default function ContractInfo({ className }: { className?: string }) {
               </div>
             </div>
           </div>
-          <div className="stat-title">Bets made</div>
-          <div className="stat-value">7 </div>
-          <div className="stat-desc text-secondary">of 80 bets total</div>
+          <div className="stat-title">Won</div>
+          <div className="stat-value">{prize ? formatEther(prize) : 0}</div>
+          <div className="stat-desc">You can withdraw</div>
         </div>
       </div>
     </div>
