@@ -8,11 +8,11 @@ const dotClassName = twMerge(
 );
 const dotItemClassName = "bg-base-200 relative px-2";
 
-export default function InfoRow({ title, children }: { title: string; children: React.ReactNode }) {
+export default function InfoRow({ title, children, bg }: { title: string; children: React.ReactNode; bg?: string }) {
   return (
     <div className={dotClassName}>
-      <div className={dotItemClassName}>{title}</div>
-      <div className={dotItemClassName}>{children}</div>
+      <div className={twMerge(dotItemClassName, bg)}>{title}</div>
+      <div className={twMerge(dotItemClassName, bg)}>{children}</div>
     </div>
   );
 }

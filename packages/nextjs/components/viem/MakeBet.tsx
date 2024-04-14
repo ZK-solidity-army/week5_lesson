@@ -8,11 +8,12 @@ import { useContractWrite } from "wagmi";
 import * as chains from "wagmi/chains";
 import bet from "~~/assets/lottie/bet.json";
 import ErrorBlock from "~~/components/Error";
+import InfoRow from "~~/components/base/InfoRow";
 import { ContractContext } from "~~/context";
 import deployedContracts from "~~/contracts/deployedContracts";
 
 export default function MakeBet({ className }: { className?: string }) {
-  const [amount, setAmount] = useState<string>("1");
+  const [amount, setAmount] = useState<string>("");
   const [txHashes, setTxHashes] = useState<string[]>([]);
 
   const lottieRef: LottieRef = useRef(null);
@@ -49,18 +50,17 @@ export default function MakeBet({ className }: { className?: string }) {
     [setAmount],
   );
 
-  const betPrice = contractContext.betPrice ? Number(contractContext.betPrice) : 0;
-  const betFee = contractContext.betFee ? Number(contractContext.betFee) : 0;
-  const amountNum = Number(amount) || 0;
-  const price = betPrice * amountNum;
-  const totalWithFee = price + betFee;
+  // calculate totalPrice and totalFee
+  const amountNum = BigInt(amount) || 0n;
+  const totalPrice = contractContext.betPrice ? contractContext.betPrice * amountNum : 0n;
+  const totalFee = contractContext.betFee ? totalPrice + contractContext.betFee * amountNum : 0n;
 
   return (
     <div className={className}>
       <label className="label">
-        <span className="label-text">How many bets would you like to make?</span>
+        <span className="label-text">How many tickets would you like to buy?</span>
       </label>
-      <div className="md:w-56">
+      <div className="md:w-56 md:mx-auto">
         <Lottie
           animationData={bet}
           className="w-56 h-56 mx-auto"
@@ -71,7 +71,7 @@ export default function MakeBet({ className }: { className?: string }) {
         <div className="w-full">
           <input
             type="text"
-            placeholder="Bets amount"
+            placeholder="Amount of tickets"
             className="input input-bordered w-full"
             value={amount}
             onChange={onChange}
@@ -80,14 +80,25 @@ export default function MakeBet({ className }: { className?: string }) {
         <button className="btn w-full mt-2" onClick={onSubmit}>
           🎰 Buy Tickets
         </button>
-        <div className="mt-2 text-center">
+        <div className="mt-4 text-sm">
           {amountNum > 0 && (
             <>
-              <p>Price: {formatUnits(BigInt(price.toString()), contractContext.tokenDecimals || 0)} G9LT</p>
-              <p>Fee: {formatUnits(BigInt(betFee.toString()), contractContext.tokenDecimals || 0)} G9LT</p>
-              <p>
-                Total with fee: {formatUnits(BigInt(totalWithFee.toString()), contractContext.tokenDecimals || 0)} G9LT
-              </p>
+              {totalPrice && contractContext.tokenDecimals && (
+                <InfoRow title="Price" bg="bg-base-100">
+                  {formatUnits(totalPrice, contractContext.tokenDecimals)} {contractContext.tokenSymbol}
+                </InfoRow>
+              )}
+              {totalFee && contractContext.tokenDecimals && (
+                <InfoRow title="Fee" bg="bg-base-100">
+                  {formatUnits(totalFee, contractContext.tokenDecimals)} {contractContext.tokenSymbol}
+                </InfoRow>
+              )}
+              {contractContext.tokenDecimals && (
+                <InfoRow title="Total" bg="bg-base-100">
+                  {formatUnits(totalFee + totalPrice || 0n, contractContext.tokenDecimals)}{" "}
+                  {contractContext.tokenSymbol}
+                </InfoRow>
+              )}
             </>
           )}
         </div>
