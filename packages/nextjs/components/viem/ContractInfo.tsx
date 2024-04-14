@@ -92,7 +92,7 @@ export default function ContractInfo({ className }: { className?: string }) {
             </svg>
             */}
           </div>
-          <div className="stat-title">Price pool</div>
+          <div className="stat-title">Prize pool</div>
           <div className="stat-value text-warning">
             {prizePool && typeof tokenDecimals !== "undefined" ? formatUnits(prizePool, tokenDecimals) : 0}
           </div>
