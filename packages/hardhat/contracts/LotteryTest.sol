@@ -9,7 +9,7 @@ import {LotteryToken} from "./LotteryToken.sol";
 /// @notice You can use this contract for running a very simple lottery
 /// @dev This contract implements a relatively weak randomness source, since there is no cliff period between the randao reveal and the actual usage in this contract
 /// @custom:teaching This is a contract meant for teaching only
-contract Lottery is Ownable {
+contract LotteryTest is Ownable {
     /// @notice Address of the token used as payment for the bets
     LotteryToken public paymentToken;
     /// @notice Amount of tokens given per ETH paid
@@ -92,6 +92,34 @@ contract Lottery is Ownable {
 
     /// @notice Calls the bet function `times` times
     function betMany(uint256 times) external {
+        require(times > 0);
+        while (times > 0) {
+            bet();
+            times--;
+        }
+    }
+
+    function betManyOptimized(uint256 times) external {
+        require(times > 0);
+        uint256 totalFee =  betFee * times;
+        uint256 totalPrize = betPrice * times;
+        ownerPool += totalFee;
+        prizePool += totalPrize;
+
+        address[] memory slots = new address[](_slots.length + times);
+        uint256 length = _slots.length;
+        for (uint256 i = 0; i < length; i++) {
+            slots[i] = _slots[i];
+        }
+
+        for (uint256 i = length; i < slots.length; i++) {
+            slots[i] = msg.sender;
+        }
+        _slots = slots;
+        paymentToken.transferFrom(msg.sender, address(this), totalFee + totalPrize);
+    }
+
+    function betManyPartially(uint256 times) external {
         require(times > 0);
 
         uint256 totalFee =  betFee * times;
