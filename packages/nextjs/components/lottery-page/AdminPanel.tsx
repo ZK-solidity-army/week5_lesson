@@ -39,13 +39,13 @@ const AdminPanel: NextPage = () => {
   });
 
   useEffect(() => {
-    if (contractContext.setContractContext) {
-      contractContext.setContractContext({
-        ...contractContext,
-        lotteryAddress: lotteryContractAddress as `0x${string}`,
-      });
-    }
-  }, []);
+    if (contractContext.lotteryAddress === lotteryContractAddress) return;
+    if (!contractContext.setContractContext) return;
+    contractContext.setContractContext({
+      ...contractContext,
+      lotteryAddress: lotteryContractAddress as `0x${string}`,
+    });
+  }, [lotteryContractAddress, contractContext]);
 
   const onSelectContract = useCallback(
     (address: `0x${string}`) => {
