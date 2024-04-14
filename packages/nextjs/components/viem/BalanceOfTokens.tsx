@@ -46,5 +46,5 @@ function Balance({
     args: [address],
     watch: true,
   });
-  return <>{data ? formatUnits(data, decimals, 5) : 0}</>;
+  return <>{data ? formatUnits(data, decimals) : 0}</>;
 }

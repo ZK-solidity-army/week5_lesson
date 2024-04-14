@@ -73,9 +73,9 @@ export default function ContractInfo({ className }: { className?: string }) {
           </div>
           <div className="stat-title">Allowance</div>
           <div className="stat-value text-accent">
-            {contractContext.tokenDecimals && allowance ? formatUnits(allowance, contractContext.tokenDecimals) : "..."}
+            {contractContext.tokenDecimals && allowance ? formatUnits(allowance, contractContext.tokenDecimals) : "0"}
           </div>
-          <div className="stat-desc">Approved to transfer</div>
+          <div className="stat-desc">Allowed to transfer</div>
         </div>
 
         <div className="stat">

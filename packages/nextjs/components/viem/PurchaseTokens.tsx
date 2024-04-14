@@ -16,7 +16,7 @@ export default function PurchaseTokens({ className }: { className?: string }) {
   const [txHashes, setTxHashes] = useState<string[]>([]);
 
   const contractContext = useContext(ContractContext);
-  const tokenSymbol = contractContext.tokenSymbol || "'Unknown'";
+  const tokenSymbol = contractContext.tokenSymbol || "Unknown";
 
   const { isLoading, write, error } = useContractWrite({
     address: contractContext.lotteryAddress,
@@ -86,7 +86,7 @@ export default function PurchaseTokens({ className }: { className?: string }) {
             <input
               type="text"
               placeholder="Amount"
-              className="input input-bordered w-full max-w-xs input-lg text-2xl pr-20"
+              className="input input-bordered w-full input-lg text-2xl pr-20"
               defaultValue={amount}
               onChange={onChange}
             />
