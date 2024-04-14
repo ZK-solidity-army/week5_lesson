@@ -94,8 +94,8 @@ export default function PurchaseTokens({ className }: { className?: string }) {
           {amount && contractContext.purchaseRatio ? (
             <div className="text-neutral-500 text-sm my-3">
               It costs{" "}
-              {formatUnits(getEthAmount(amount, contractContext.purchaseRatio), contractContext.tokenDecimals || 0, 5)}{" "}
-              SEP to buy
+              {formatUnits(getEthAmount(amount, contractContext.purchaseRatio), contractContext.tokenDecimals || 0)} SEP
+              to buy
             </div>
           ) : null}
           <div>

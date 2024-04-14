@@ -7,7 +7,8 @@ import { twMerge } from "tailwind-merge";
 import { formatEther } from "viem";
 import { useAccount, useBalance, useContractRead } from "wagmi";
 import * as chains from "wagmi/chains";
-import { CurrencyDollarIcon, TrophyIcon } from "@heroicons/react/24/outline";
+import { TrophyIcon } from "@heroicons/react/24/outline";
+import TokenIcon from "~~/components/svg/TokenIcon";
 import { ContractContext } from "~~/context";
 import deployedContracts from "~~/contracts/deployedContracts";
 import formatUnits from "~~/utils/formatUnits";
@@ -17,8 +18,15 @@ export default function ContractInfo({ className }: { className?: string }) {
   const { data: ethBalance } = useBalance({ address: account.address, watch: true });
   const contractContext = useContext(ContractContext);
 
-  let tokenPrice = "...";
   const tokenDecimals = contractContext.tokenDecimals;
+
+  const { data: allowance } = useContractRead({
+    address: contractContext.tokenAddress,
+    abi: deployedContracts[chains.sepolia.id].LotteryToken.abi,
+    functionName: "allowance",
+    args: [account.address as "string", contractContext.lotteryAddress as "string"],
+    watch: true,
+  });
 
   //TODO: merge requests in one
   const { data: prize } = useContractRead({
@@ -39,10 +47,6 @@ export default function ContractInfo({ className }: { className?: string }) {
   if (!account || !account.isConnected) return null;
   if (!account.address) return null;
 
-  if (contractContext.betPrice && typeof contractContext.tokenDecimals !== "undefined") {
-    tokenPrice = formatUnits(contractContext.betPrice, contractContext.tokenDecimals, 5);
-  }
-
   return (
     <div className="mx-4 md:mx-0">
       <div className={twMerge("stats shadow text-left stats-vertical lg:stats-horizontal w-full md:w-auto", className)}>
@@ -62,11 +66,16 @@ export default function ContractInfo({ className }: { className?: string }) {
 
         <div className="stat">
           <div className="stat-figure text-accent">
+            <TokenIcon className="inline-block w-8 h-8 stroke-current" />
+            {/*
             <CurrencyDollarIcon className="inline-block w-7 h-7 stroke-current stroke-1" />
+            */}
           </div>
-          <div className="stat-title">Bet price</div>
-          <div className="stat-value text-accent">{tokenPrice}</div>
-          <div className="stat-desc">Min bet price</div>
+          <div className="stat-title">Allowance</div>
+          <div className="stat-value text-accent">
+            {contractContext.tokenDecimals && allowance ? formatUnits(allowance, contractContext.tokenDecimals) : "..."}
+          </div>
+          <div className="stat-desc">Approved to transfer</div>
         </div>
 
         <div className="stat">
@@ -85,7 +94,7 @@ export default function ContractInfo({ className }: { className?: string }) {
           </div>
           <div className="stat-title">Price pool</div>
           <div className="stat-value text-warning">
-            {prizePool && typeof tokenDecimals !== "undefined" ? formatUnits(prizePool, tokenDecimals, 5) : 0}
+            {prizePool && typeof tokenDecimals !== "undefined" ? formatUnits(prizePool, tokenDecimals) : 0}
           </div>
           <div className="stat-desc">Total prize pool</div>
         </div>
