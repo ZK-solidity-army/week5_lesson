@@ -2,13 +2,13 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { Contract } from "ethers";
 
-const deployLotteryContract: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployLottery2Contracts: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
   await deploy("Lottery", {
     from: deployer,
-    args: ["Group 9 Lottery Token", "G9LT", 1500, 10n ** 16n, 10n ** 15n],
+    args: ["Additional Lottery for test", "ALT", 300, 10n ** 16n, 10n ** 15n],
     log: true,
     autoMine: true,
   });
@@ -16,8 +16,10 @@ const deployLotteryContract: DeployFunction = async function (hre: HardhatRuntim
   const lotteryContract = await hre.ethers.getContract<Contract>("Lottery", deployer);
   const lotteryTokenContract = await hre.ethers.getContractAt("LotteryToken", await lotteryContract.paymentToken());
 
-  console.log("👋 DeployedContract: Group 9 Lottery");
   const symbol = await lotteryTokenContract.symbol();
+  const tokenName = await lotteryTokenContract.name();
+
+  console.log(`👋 DeployedContract: ${tokenName} Lottery`);
   console.log("   Symbol: ", symbol);
   console.log("   Purchase ration: ", await lotteryContract.purchaseRatio());
   console.log(`   Bet price: ${(await lotteryContract.betPrice()).toString()} ${symbol}`);
@@ -26,8 +28,8 @@ const deployLotteryContract: DeployFunction = async function (hre: HardhatRuntim
   console.log("   LotteryToken address", await lotteryContract.paymentToken());
 };
 
-export default deployLotteryContract;
+export default deployLottery2Contracts;
 
 // Tags are useful if you have multiple deploy files and only want to run one of them.
 // e.g. yarn deploy --tags YourContract
-deployLotteryContract.tags = ["Lottery"];
+deployLottery2Contracts.tags = ["Lottery", "Lottery2"];
