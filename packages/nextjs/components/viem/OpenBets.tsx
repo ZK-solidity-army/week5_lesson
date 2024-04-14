@@ -28,7 +28,9 @@ export default function OpenBets({ className }: { className?: string }) {
     const amountNum = parseInt(amount, 10);
     if (isNaN(amountNum)) return;
 
-    const timestamp = new Date().valueOf() + amountNum * 3600;
+    // add 5 minutes if 0 hours
+    const add = amountNum === 0 ? 60 * 5 : amountNum;
+    const timestamp = Math.ceil(new Date().valueOf() / 1000) + amountNum * 3600 + add;
     write({
       args: [BigInt(timestamp)],
     });
@@ -42,7 +44,7 @@ export default function OpenBets({ className }: { className?: string }) {
     <div className={className}>
       <div>
         <label className="label">
-          <span className="label-text">Open bets in X hours</span>
+          <span className="label-text">Close bets in X hours</span>
         </label>
         <div>
           <div>

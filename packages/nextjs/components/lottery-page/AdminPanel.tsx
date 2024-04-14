@@ -177,6 +177,11 @@ const AdminPanel: NextPage = () => {
               "Unknown"
             )}
           </InfoRow>
+          {contractContext.betsOpen && contractContext.betsClosingTime ? (
+            <InfoRow title="Bets closing time">
+              {new Date(Number(contractContext.betsClosingTime) * 1000).toLocaleString()}
+            </InfoRow>
+          ) : null}
           <InfoRow title="Is owner">
             {typeof contractContext.ownerAddress !== "undefined" ? (
               isOwner() ? (

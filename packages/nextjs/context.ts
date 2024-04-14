@@ -10,6 +10,7 @@ export type ContractContextType = {
   purchaseRatio?: bigint;
   betPrice?: bigint;
   betFee?: bigint;
+  betsClosingTime?: bigint;
   tokenName?: string;
   betsOpen?: boolean;
   isLoading?: boolean;

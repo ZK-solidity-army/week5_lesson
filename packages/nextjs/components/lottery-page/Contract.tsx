@@ -37,14 +37,18 @@ export default function Contract({ children }: { children: React.ReactNode }) {
         ...lotteryContract,
         functionName: "owner",
       },
+      {
+        ...lotteryContract,
+        functionName: "betsClosingTime",
+      },
     ],
+    watch: true,
   });
 
   const tokenContract = {
     address: data ? (data[0].result as `0x${string}`) : undefined,
     abi: deployedContracts[chains.sepolia.id].LotteryToken.abi,
   };
-  console.log(data);
   const {
     data: tokenData,
     isError: isTokenError,
@@ -68,6 +72,7 @@ export default function Contract({ children }: { children: React.ReactNode }) {
     betPrice: data ? (data[2].result as bigint) : undefined,
     betFee: data ? (data[3].result as bigint) : undefined,
     betsOpen: data ? (data[4].result as boolean) : undefined,
+    betsClosingTime: data ? (data[6].result as bigint) : undefined,
     ownerAddress,
     // token
     tokenAddress,

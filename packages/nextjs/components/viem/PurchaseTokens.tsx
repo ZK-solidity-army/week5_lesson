@@ -63,8 +63,9 @@ export default function PurchaseTokens({ className }: { className?: string }) {
     if (!amount) return;
     if (approveIsLoading) return;
     if (!contractContext.lotteryAddress) return;
+    if (!contractContext.tokenDecimals) return;
 
-    const unitsAmount = parseUnits(amount, contractContext.tokenDecimals || 0);
+    const unitsAmount = parseUnits(amount, contractContext.tokenDecimals);
     if (!unitsAmount) return;
 
     approve({
