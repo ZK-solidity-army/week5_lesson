@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import { formatUnits } from "viem";
 import { useContractRead } from "wagmi";
 import * as chains from "wagmi/chains";
 import TokenIcon from "~~/components/svg/TokenIcon";
 import { ContractContext } from "~~/context";
 import deployedContracts from "~~/contracts/deployedContracts";
+import formatUnits from "~~/utils/formatUnits";
 
 export default function BalanceOfTokens({ address }: { address: `0x${string}` }) {
   const contractContext = useContext(ContractContext);
@@ -46,6 +46,5 @@ function Balance({
     args: [address],
     watch: true,
   });
-  const formattedData = data ? formatUnits(data, decimals) : 0;
-  return <>{formattedData}</>;
+  return <>{data ? formatUnits(data, decimals, 5) : 0}</>;
 }
