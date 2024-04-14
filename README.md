@@ -1,4 +1,4 @@
-#  Encode Group 9 Lottery ![lint](https://github.com/ZK-solidity-army/week5_lesson/actions/workflows/lint.yml/badge.svg)
+#  Encode Group 9 Lottery ![lint](https://github.com/ZK-solidity-army/week5_lesson/actions/workflows/lint.yaml/badge.svg)
 
 https://lottery.up.railway.app/
 
