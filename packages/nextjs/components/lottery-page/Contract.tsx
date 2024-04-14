@@ -41,6 +41,14 @@ export default function Contract({ children }: { children: React.ReactNode }) {
         ...lotteryContract,
         functionName: "betsClosingTime",
       },
+      {
+        ...lotteryContract,
+        functionName: "prizePool",
+      },
+      {
+        ...lotteryContract,
+        functionName: "ownerPool",
+      },
     ],
     watch: true,
   });
@@ -73,6 +81,8 @@ export default function Contract({ children }: { children: React.ReactNode }) {
     betFee: data ? (data[3].result as bigint) : undefined,
     betsOpen: data ? (data[4].result as boolean) : undefined,
     betsClosingTime: data ? (data[6].result as bigint) : undefined,
+    prizePool: data ? (data[7].result as bigint) : undefined,
+    ownerPool: data ? (data[8].result as bigint) : undefined,
     ownerAddress,
     // token
     tokenAddress,

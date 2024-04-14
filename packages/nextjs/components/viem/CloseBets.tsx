@@ -32,7 +32,7 @@ export default function CloseBets({ className }: { className?: string }) {
       <div>
         <div className="md:mt-[5.8rem]">
           <button className="btn btn-neutral w-full" onClick={onSubmit}>
-            Close bets
+            Close Lottery
           </button>
         </div>
         <ErrorBlock className="text-center mt-5" error={error} />
