@@ -29,6 +29,14 @@ export default function Contract({ children }: { children: React.ReactNode }) {
         ...lotteryContract,
         functionName: "betFee",
       },
+      {
+        ...lotteryContract,
+        functionName: "betsOpen",
+      },
+      {
+        ...lotteryContract,
+        functionName: "owner",
+      },
     ],
   });
 
@@ -51,6 +59,7 @@ export default function Contract({ children }: { children: React.ReactNode }) {
   });
 
   const tokenAddress = data && data[0].result ? (`${data[0].result}`.toLowerCase() as `0x${string}`) : undefined;
+  const ownerAddress = data && data[5].result ? (`${data[5].result}`.toLowerCase() as `0x${string}`) : undefined;
   const _contractContext = {
     ...contractContext,
     // lottery
@@ -58,6 +67,8 @@ export default function Contract({ children }: { children: React.ReactNode }) {
     purchaseRatio: data ? (data[1].result as bigint) : undefined,
     betPrice: data ? (data[2].result as bigint) : undefined,
     betFee: data ? (data[3].result as bigint) : undefined,
+    betsOpen: data ? (data[4].result as boolean) : undefined,
+    ownerAddress,
     // token
     tokenAddress,
     tokenSymbol: tokenData ? `${tokenData[0].result}` : undefined,

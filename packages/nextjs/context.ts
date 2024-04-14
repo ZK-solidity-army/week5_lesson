@@ -4,6 +4,7 @@ export type ContractContextType = {
   contractAddress?: `0x${string}`;
   lotteryAddress?: `0x${string}`;
   tokenAddress?: `0x${string}`;
+  ownerAddress?: `0x${string}`;
   tokenSymbol?: string;
   tokenDecimals?: number;
   amountNum?: bigint;
@@ -12,6 +13,7 @@ export type ContractContextType = {
   betPrice?: bigint;
   betFee?: bigint;
   tokenName?: string;
+  betsOpen?: boolean;
   isLoading?: boolean;
   isError?: boolean;
   setContractContext?: (contractContext: ContractContextType) => void;
