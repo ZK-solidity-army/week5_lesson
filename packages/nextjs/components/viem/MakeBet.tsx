@@ -53,7 +53,7 @@ export default function MakeBet({ className }: { className?: string }) {
   // calculate totalPrice and totalFee
   const amountNum = BigInt(amount) || 0n;
   const totalPrice = contractContext.betPrice ? contractContext.betPrice * amountNum : 0n;
-  const totalFee = contractContext.betFee ? totalPrice + contractContext.betFee * amountNum : 0n;
+  const totalFee = contractContext.betFee ? contractContext.betFee * amountNum : 0n;
 
   return (
     <div className={className}>
@@ -71,6 +71,7 @@ export default function MakeBet({ className }: { className?: string }) {
         <div className="w-full">
           <input
             type="text"
+            maxLength={10}
             placeholder="Amount of tickets"
             className="input input-bordered w-full"
             value={amount}
