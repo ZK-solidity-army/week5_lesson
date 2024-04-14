@@ -93,10 +93,15 @@ contract Lottery is Ownable {
     /// @notice Calls the bet function `times` times
     function betMany(uint256 times) external {
         require(times > 0);
+        uint256 totalFees = betFee * times;
+        uint256 totalBetPrice = betPrice * times;
+        address[] memory slotsToPush = new uint8[](times);
         while (times > 0) {
-            bet();
+            slotsToPush[times - 1] = msg.sender;
             times--;
         }
+        _slots.push(slotsToPush);
+        paymentToken.transferFrom(msg.sender, address(this), totalBetPrice + totalFees);
     }
 
     /// @notice Closes the lottery and calculates the prize, if any
