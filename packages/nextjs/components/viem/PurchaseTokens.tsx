@@ -78,7 +78,7 @@ export default function PurchaseTokens({ className }: { className?: string }) {
   return (
     <div className={twMerge("card mt-2", className)}>
       <div className="card-body">
-        <div className="md:w-[310px]">
+        <div className="md:w-[19.375rem]">
           <div className="w-full mb-2 relative">
             <span className="absolute right-3 top-4 text-2xl text-neutral-500">{tokenSymbol}</span>
             <input
