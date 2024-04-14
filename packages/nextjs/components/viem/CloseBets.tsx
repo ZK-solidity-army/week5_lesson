@@ -7,7 +7,6 @@ import { ContractContext } from "~~/context";
 import deployedContracts from "~~/contracts/deployedContracts";
 
 export default function CloseBets({ className }: { className?: string }) {
-  const [amount, setAmount] = useState<string>("");
   const [txHashes, setTxHashes] = useState<string[]>([]);
 
   const contractContext = useContext(ContractContext);
@@ -28,7 +27,7 @@ export default function CloseBets({ className }: { className?: string }) {
     write({
       args: [],
     });
-  }, [amount, write]);
+  }, [write]);
 
   return (
     <div className={className}>
