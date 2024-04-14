@@ -102,9 +102,10 @@ export default function MakeBet({ className }: { className?: string }) {
             </>
           )}
         </div>
-        {error && <ErrorBlock error={error} />}
-        <TransactionList txHashes={txHashes} />
       </div>
+
+      <ErrorBlock className="md:w-56 text-center mt-5 mx-auto" error={error} />
+      <TransactionList className="mt-8 text-center" txHashes={txHashes} size={20} />
     </div>
   );
 }

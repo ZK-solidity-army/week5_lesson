@@ -71,9 +71,9 @@ export default function ContractInfo({ className }: { className?: string }) {
             <CurrencyDollarIcon className="inline-block w-7 h-7 stroke-current stroke-1" />
             */}
           </div>
-          <div className="stat-title">Allowance</div>
+          <div className="stat-title">Approved</div>
           <div className="stat-value text-accent">
-            {contractContext.tokenDecimals && allowance ? formatUnits(allowance, contractContext.tokenDecimals) : "..."}
+            {contractContext.tokenDecimals && allowance ? formatUnits(allowance, contractContext.tokenDecimals) : "0"}
           </div>
           <div className="stat-desc">Approved to transfer</div>
         </div>
