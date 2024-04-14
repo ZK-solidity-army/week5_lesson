@@ -17,8 +17,8 @@ const Home: NextPage = () => {
   if (!account || !account.isConnected) {
     return (
       <>
-        <Lottie animationData={lottery} className="w-[500px] mx-auto mt-[-50px]" />
-        <h1 className="text-center text-3xl mt-[-100px]">Welcome to the Lottery!</h1>
+        <Lottie animationData={lottery} className="w-[31.25rem] mx-auto mt-[-3.125rem]" />
+        <h1 className="text-center text-3xl mt-[-6.25rem]">Welcome to the Lottery!</h1>
         <ConnectButton.Custom>
           {({ openConnectModal }) => (
             <button className="btn btn-neutral mt-10 mx-auto block" onClick={openConnectModal}>
@@ -39,7 +39,7 @@ const Home: NextPage = () => {
         </span>
       </h1>
       */}
-      <div className="text-center lg:sticky top-[-25px] z-10">
+      <div className="text-center lg:sticky top-[-1.5625rem] z-10">
         <ContractInfo className="my-10" />
       </div>
       <div className="text-center">

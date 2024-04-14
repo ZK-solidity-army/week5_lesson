@@ -6,7 +6,7 @@ import MakeBet from "~~/components/viem/MakeBet";
 const BettingPanel: NextComponentType = () => {
   return (
     <div className="px-4">
-      <div className="card border dark:border-base-300 bg-base-100 m-4 py-2 mt-12 max-w-[1000px] mx-auto">
+      <div className="card border dark:border-base-300 bg-base-100 m-4 py-2 mt-12 max-w-[62.5rem] mx-auto">
         {/*
       <div className="card-title">
         <h2 className="text-2xl my-4 indent-10">Player space</h2>
