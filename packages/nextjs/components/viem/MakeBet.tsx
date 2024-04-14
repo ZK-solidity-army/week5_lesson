@@ -3,6 +3,7 @@
 import { useCallback, useContext, useRef, useState } from "react";
 import TransactionList from "./TransactionList";
 import Lottie, { LottieRef } from "lottie-react";
+import { formatUnits } from "viem";
 import { useContractWrite } from "wagmi";
 import * as chains from "wagmi/chains";
 import bet from "~~/assets/lottie/bet.json";
@@ -48,11 +49,14 @@ export default function MakeBet({ className }: { className?: string }) {
     [setAmount],
   );
 
+  const betPrice = contractContext.betPrice ? Number(contractContext.betPrice) : 0;
+  const betFee = contractContext.betFee ? Number(contractContext.betFee) : 0;
+  const amountNum = Number(amount) || 0;
+  const price = betPrice * amountNum;
+  const totalWithFee = price + betFee;
+
   return (
     <div className={className}>
-      {/*
-        <h2 className="card-title">Make a bet</h2>
-        */}
       <label className="label">
         <span className="label-text">How many bets would you like to make?</span>
       </label>
@@ -76,10 +80,20 @@ export default function MakeBet({ className }: { className?: string }) {
         <button className="btn w-full mt-2" onClick={onSubmit}>
           🎰 Buy Tickets
         </button>
+        <div className="mt-2 text-center">
+          {amountNum > 0 && (
+            <>
+              <p>Price: {formatUnits(BigInt(price.toString()), contractContext.tokenDecimals || 0)} G9LT</p>
+              <p>Fee: {formatUnits(BigInt(betFee.toString()), contractContext.tokenDecimals || 0)} G9LT</p>
+              <p>
+                Total with fee: {formatUnits(BigInt(totalWithFee.toString()), contractContext.tokenDecimals || 0)} G9LT
+              </p>
+            </>
+          )}
+        </div>
+        {error && <ErrorBlock error={error} />}
+        <TransactionList txHashes={txHashes} />
       </div>
-
-      <ErrorBlock className="md:w-56 text-center mt-5" error={error} />
-      <TransactionList className="mt-8" txHashes={txHashes} size={20} />
     </div>
   );
 }

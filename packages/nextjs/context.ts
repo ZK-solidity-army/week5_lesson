@@ -6,7 +6,9 @@ export type ContractContextType = {
   tokenAddress?: `0x${string}`;
   tokenSymbol?: string;
   tokenDecimals?: number;
+  amountNum?: bigint;
   purchaseRatio?: bigint;
+  totalWithFee?: bigint;
   betPrice?: bigint;
   betFee?: bigint;
   tokenName?: string;
