@@ -74,7 +74,7 @@ export default function MakeBet({ className }: { className?: string }) {
           />
         </div>
         <button className="btn w-full mt-2" onClick={onSubmit}>
-          🎰 Bet
+          🎰 Buy Tickets
         </button>
       </div>
 

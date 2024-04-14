@@ -68,8 +68,6 @@ export default function Contract({ children }: { children: React.ReactNode }) {
     setContractContext,
   };
 
-  console.log(_contractContext);
-
   return (
     <ContractContext.Provider value={_contractContext}>
       <div>{children}</div>

@@ -4,12 +4,13 @@ import EthIcon from "../svg/EthIcon";
 import BalanceOfTokens from "./BalanceOfTokens";
 import { blo } from "blo";
 import { twMerge } from "tailwind-merge";
-import { formatEther, formatUnits } from "viem";
+import { formatEther } from "viem";
 import { useAccount, useBalance, useContractRead } from "wagmi";
 import * as chains from "wagmi/chains";
 import { CurrencyDollarIcon, TrophyIcon } from "@heroicons/react/24/outline";
 import { ContractContext } from "~~/context";
 import deployedContracts from "~~/contracts/deployedContracts";
+import formatUnits from "~~/utils/formatUnits";
 
 export default function ContractInfo({ className }: { className?: string }) {
   const account = useAccount();
@@ -17,6 +18,7 @@ export default function ContractInfo({ className }: { className?: string }) {
   const contractContext = useContext(ContractContext);
 
   let tokenPrice = "...";
+  const tokenDecimals = contractContext.tokenDecimals;
 
   //TODO: merge requests in one
   const { data: prize } = useContractRead({
@@ -38,7 +40,7 @@ export default function ContractInfo({ className }: { className?: string }) {
   if (!account.address) return null;
 
   if (contractContext.betPrice) {
-    tokenPrice = formatUnits(contractContext.betPrice, contractContext.tokenDecimals || 0);
+    tokenPrice = formatUnits(contractContext.betPrice, contractContext.tokenDecimals || 0, 5);
   }
 
   return (
@@ -83,7 +85,7 @@ export default function ContractInfo({ className }: { className?: string }) {
           </div>
           <div className="stat-title">Price pool</div>
           <div className="stat-value text-warning">
-            {prizePool ? formatUnits(prizePool, contractContext.tokenDecimals || 0) : 0}
+            {prizePool && typeof tokenDecimals !== "undefined" ? formatUnits(prizePool, tokenDecimals, 5) : 0}
           </div>
           <div className="stat-desc">Total prize pool</div>
         </div>
