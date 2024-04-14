@@ -3,26 +3,22 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { NextPage } from "next";
-import { twMerge } from "tailwind-merge";
+import { useAccount } from "wagmi";
 import * as chains from "wagmi/chains";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import InfoRow from "~~/components/base/InfoRow";
 import CloseBets from "~~/components/viem/CloseBets";
 import OpenBets from "~~/components/viem/OpenBets";
 import { LOTTERY_ADDRESSES } from "~~/config";
 import { ContractContext } from "~~/context";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
+import formatUnits from "~~/utils/formatUnits";
 import { getBlockExplorerAddressLink } from "~~/utils/scaffold-eth";
 import { middleTruncate } from "~~/utils/truncate";
 
 const AdminPanel: NextPage = () => {
   const contractContext = useContext(ContractContext);
-  const dotClassName = twMerge(
-    "relative",
-    "before:content-[''] before:absolute before:w-full before:h-0 before:border-b-[0.125rem] before:border-dotted",
-    "before:leading-0 before:bottom-1 before:border-base-content before:z-0",
-    "flex flex-row justify-between items-center my-2",
-  );
-  const dotItemClassName = "bg-base-200 relative px-2";
+  const account = useAccount();
   const dropdownRef = useRef(null);
   useOutsideClick(
     dropdownRef,
@@ -77,6 +73,11 @@ const AdminPanel: NextPage = () => {
     [setLotteryContractAddress, contractContext],
   );
 
+  const isOwner = useCallback(() => {
+    if (!account || !account.address) return false;
+    return contractContext.ownerAddress === account.address.toLowerCase();
+  }, [contractContext, account]);
+
   useEffect(() => {
     localStorage.setItem("lotteryContractAddress", lotteryContractAddress);
   }, [lotteryContractAddress]);
@@ -112,9 +113,8 @@ const AdminPanel: NextPage = () => {
           </ul>
         </details>
         <div className="max-w-[31.25rem] mx-auto my-5 text-sm">
-          <div className={dotClassName}>
-            <div className={dotItemClassName}>Lottery address</div>
-            <div className={dotItemClassName}>
+          <InfoRow title="Lottery address">
+            <>
               {contractContext.lotteryAddress ? (
                 <Link
                   href={getBlockExplorerAddressLink(chains.sepolia, contractContext.lotteryAddress)}
@@ -126,11 +126,10 @@ const AdminPanel: NextPage = () => {
               ) : (
                 "Unknown"
               )}
-            </div>
-          </div>
-          <div className={dotClassName}>
-            <div className={dotItemClassName}>Token address</div>
-            <div className={dotItemClassName}>
+            </>
+          </InfoRow>
+          <InfoRow title="Token address">
+            <>
               {contractContext.tokenAddress ? (
                 <Link
                   href={getBlockExplorerAddressLink(chains.sepolia, contractContext.tokenAddress)}
@@ -142,22 +141,53 @@ const AdminPanel: NextPage = () => {
               ) : (
                 "Unknown"
               )}
-            </div>
-          </div>
-          <div className={dotClassName}>
-            <div className={dotItemClassName}>Token name</div>
-            <div className={dotItemClassName}>{contractContext.tokenName || "Unknown"}</div>
-          </div>
-          <div className={dotClassName}>
-            <div className={dotItemClassName}>Token symbol</div>
-            <div className={dotItemClassName}>{contractContext.tokenSymbol || "Unknown"}</div>
-          </div>
-          <div className={dotClassName}>
-            <div className={dotItemClassName}>Purchase ratio</div>
-            <div className={dotItemClassName}>
-              {contractContext.purchaseRatio ? `1/${contractContext.purchaseRatio}` : "Unknown"}
-            </div>
-          </div>
+            </>
+          </InfoRow>
+          <InfoRow title="Token name">{contractContext.tokenName || "Unknown"}</InfoRow>
+          <InfoRow title="Token symbol">{contractContext.tokenSymbol || "Unknown"}</InfoRow>
+          <InfoRow title="Purchase ratio">
+            {contractContext.purchaseRatio ? `1/${contractContext.purchaseRatio}` : "Unknown"}
+          </InfoRow>
+          <InfoRow title="Bet price">
+            {contractContext.betPrice &&
+            typeof contractContext.tokenDecimals !== "undefined" &&
+            contractContext.tokenSymbol
+              ? `${formatUnits(contractContext.betPrice, contractContext.tokenDecimals, 5)} ${
+                  contractContext.tokenSymbol
+                }`
+              : "Unknown"}
+          </InfoRow>
+          <InfoRow title="Bet fee">
+            {contractContext.betFee &&
+            typeof contractContext.tokenDecimals !== "undefined" &&
+            contractContext.tokenSymbol
+              ? `${formatUnits(contractContext.betFee, contractContext.tokenDecimals, 5)} ${
+                  contractContext.tokenSymbol
+                }`
+              : "Unknown"}
+          </InfoRow>
+          <InfoRow title="Status">
+            {typeof contractContext.betsOpen !== "undefined" ? (
+              contractContext.betsOpen ? (
+                <span className="text-success">Open</span>
+              ) : (
+                <span className="text-error">Closed</span>
+              )
+            ) : (
+              "Unknown"
+            )}
+          </InfoRow>
+          <InfoRow title="Is owner">
+            {typeof contractContext.ownerAddress !== "undefined" ? (
+              isOwner() ? (
+                <span className="text-success">Yes</span>
+              ) : (
+                <span className="text-error">No</span>
+              )
+            ) : (
+              "Unknown"
+            )}
+          </InfoRow>
         </div>
       </div>
       <div className="card-body md:flex md:flex-row md:justify-around">

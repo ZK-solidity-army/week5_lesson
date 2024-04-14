@@ -39,8 +39,8 @@ export default function ContractInfo({ className }: { className?: string }) {
   if (!account || !account.isConnected) return null;
   if (!account.address) return null;
 
-  if (contractContext.betPrice) {
-    tokenPrice = formatUnits(contractContext.betPrice, contractContext.tokenDecimals || 0, 5);
+  if (contractContext.betPrice && typeof contractContext.tokenDecimals !== "undefined") {
+    tokenPrice = formatUnits(contractContext.betPrice, contractContext.tokenDecimals, 5);
   }
 
   return (
