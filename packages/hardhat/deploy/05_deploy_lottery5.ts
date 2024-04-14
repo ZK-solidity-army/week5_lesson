@@ -2,13 +2,13 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { Contract } from "ethers";
 
-const deployLottery4Contract: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployLottery5Contract: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
   await deploy("Lottery", {
     from: deployer,
-    args: ["SportLoto-82", "sl82", 500, 10n ** 17n, 5n * 10n ** 16n],
+    args: ["betMany Optimized", "BMO", 500, 5n * 10n ** 16n, 3n * 10n ** 15n],
     log: true,
     autoMine: true,
   });
@@ -28,8 +28,8 @@ const deployLottery4Contract: DeployFunction = async function (hre: HardhatRunti
   console.log("   LotteryToken address", await lotteryContract.paymentToken());
 };
 
-export default deployLottery4Contract;
+export default deployLottery5Contract;
 
 // Tags are useful if you have multiple deploy files and only want to run one of them.
 // e.g. yarn deploy --tags YourContract
-deployLottery4Contract.tags = ["Lottery", "Lottery5"];
+deployLottery5Contract.tags = ["Lottery", "Lottery5"];
