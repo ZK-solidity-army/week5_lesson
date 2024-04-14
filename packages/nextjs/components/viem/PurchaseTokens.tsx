@@ -3,7 +3,7 @@
 import { useCallback, useContext, useState } from "react";
 import TransactionList from "./TransactionList";
 import { twMerge } from "tailwind-merge";
-import { parseEther } from "viem";
+import { parseEther, parseUnits } from "viem";
 import { useContractWrite } from "wagmi";
 import * as chains from "wagmi/chains";
 import ErrorBlock from "~~/components/Error";
@@ -30,6 +30,22 @@ export default function PurchaseTokens({ className }: { className?: string }) {
     ),
   });
 
+  const {
+    isLoading: approveIsLoading,
+    write: approve,
+    error: approveError,
+  } = useContractWrite({
+    address: contractContext.tokenAddress,
+    abi: deployedContracts[chains.sepolia.id].LotteryToken.abi,
+    functionName: "approve",
+    onSuccess: useCallback(
+      (data: { hash: string }) => {
+        setTxHashes(prev => [data.hash, ...prev]);
+      },
+      [setTxHashes],
+    ),
+  });
+
   const onSubmit = useCallback(() => {
     if (!amount) return;
     if (isLoading) return;
@@ -42,6 +58,19 @@ export default function PurchaseTokens({ className }: { className?: string }) {
       value: ethAmount,
     });
   }, [amount, isLoading, write, contractContext]);
+
+  const onApprove = useCallback(() => {
+    if (!amount) return;
+    if (approveIsLoading) return;
+    if (!contractContext.lotteryAddress) return;
+
+    const unitsAmount = parseUnits(amount, contractContext.tokenDecimals || 0);
+    if (!unitsAmount) return;
+
+    approve({
+      args: [contractContext.lotteryAddress, unitsAmount],
+    });
+  }, [amount, approveIsLoading, approve, contractContext]);
 
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value);
@@ -63,17 +92,21 @@ export default function PurchaseTokens({ className }: { className?: string }) {
           </div>
           {amount && contractContext.purchaseRatio ? (
             <div className="text-neutral-500 text-sm my-3">
-              You will spend{" "}
+              It costs{" "}
               {formatEth(getEthAmount(amount, contractContext.purchaseRatio), contractContext.tokenDecimals || 0)} SEP
-              tokens
+              to buy
             </div>
           ) : null}
           <div>
-            <button className="btn btn-lg w-full" onClick={onSubmit}>
+            <button className="btn btn-lg w-full mb-2" onClick={onSubmit}>
               Buy Tokens
+            </button>
+            <button className="btn btn-lg w-full" onClick={onApprove}>
+              Approve
             </button>
           </div>
           <ErrorBlock className="text-center mt-4" error={error} />
+          <ErrorBlock className="text-center mt-4" error={approveError} />
           <TransactionList className="mt-8" txHashes={txHashes} />
         </div>
       </div>
