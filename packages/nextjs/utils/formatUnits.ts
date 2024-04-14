@@ -15,7 +15,7 @@ export type FormatUnitsErrorType = ErrorType;
  * formatUnits(1000000100000000000n, 18) // '1.0000001'
  * formatUnits(1001713200000000000n, 18) // '1.001' - no proper rounding
  */
-export default function formatUnits(value: bigint, decimals: number, limit = 0) {
+export default function formatUnits(value: bigint, decimals: number, limit = 4) {
   let display = value.toString();
 
   const negative = display.startsWith("-");
