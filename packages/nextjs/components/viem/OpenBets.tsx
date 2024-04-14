@@ -42,7 +42,7 @@ export default function OpenBets({ className }: { className?: string }) {
     <div className={className}>
       <div>
         <label className="label">
-          <span className="label-text">Close bets in X hours</span>
+          <span className="label-text">Open bets in X hours</span>
         </label>
         <div>
           <div>
