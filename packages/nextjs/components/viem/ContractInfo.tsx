@@ -17,6 +17,7 @@ export default function ContractInfo({ className }: { className?: string }) {
   const contractContext = useContext(ContractContext);
 
   let tokenPrice = "...";
+  const tokenDecimals = contractContext.tokenDecimals;
 
   //TODO: merge requests in one
   const { data: prize } = useContractRead({
@@ -83,7 +84,7 @@ export default function ContractInfo({ className }: { className?: string }) {
           </div>
           <div className="stat-title">Price pool</div>
           <div className="stat-value text-warning">
-            {prizePool ? formatUnits(prizePool, contractContext.tokenDecimals || 0) : 0}
+            {prizePool && typeof tokenDecimals !== "undefined" ? formatUnits(prizePool, tokenDecimals) : 0}
           </div>
           <div className="stat-desc">Total prize pool</div>
         </div>
