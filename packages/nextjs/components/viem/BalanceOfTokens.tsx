@@ -1,15 +1,15 @@
 import { useContext } from "react";
+import { formatUnits } from "viem";
 import { useContractRead } from "wagmi";
 import * as chains from "wagmi/chains";
 import TokenIcon from "~~/components/svg/TokenIcon";
 import { ContractContext } from "~~/context";
 import deployedContracts from "~~/contracts/deployedContracts";
-import { formatEth } from "~~/utils/formatEth";
 
 export default function BalanceOfTokens({ address }: { address: `0x${string}` }) {
   const contractContext = useContext(ContractContext);
   const tokenSymbol = contractContext.tokenSymbol || "??";
-  const tokenDecimals = contractContext.tokenDecimals || 0;
+  const tokenDecimals = contractContext.tokenDecimals;
   const tokenAddress = contractContext.tokenAddress;
 
   return (
@@ -19,7 +19,11 @@ export default function BalanceOfTokens({ address }: { address: `0x${string}` })
       </div>
       <div className="stat-title">Lottery Token</div>
       <div className="stat-value text-secondary">
-        {address ? <Balance tokenAddress={tokenAddress} address={address} decimals={tokenDecimals} /> : "..."}
+        {address && typeof tokenDecimals !== "undefined" ? (
+          <Balance tokenAddress={tokenAddress} address={address} decimals={tokenDecimals} />
+        ) : (
+          "..."
+        )}
       </div>
       <div className="stat-desc">Amount of {tokenSymbol} token</div>
     </div>
@@ -42,6 +46,6 @@ function Balance({
     args: [address],
     watch: true,
   });
-  const formattedData = data ? formatEth(data, decimals) : 0;
+  const formattedData = data ? formatUnits(data, decimals) : 0;
   return <>{formattedData}</>;
 }
