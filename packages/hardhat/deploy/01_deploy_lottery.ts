@@ -6,18 +6,21 @@ const deployLotteryContract: DeployFunction = async function (hre: HardhatRuntim
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  await deploy("Lottery", {
+  await deploy("Lottery1", {
     from: deployer,
-    args: ["Group 9 Lottery Token", "G9LT", 1500, 10n ** 16n, 10n ** 15n],
+    contract: "Lottery",
+    args: ["Group 9 Lottery Token", "G9LT", 1500, 10n ** 18n, 10n ** 17n],
     log: true,
     autoMine: true,
   });
 
-  const lotteryContract = await hre.ethers.getContract<Contract>("Lottery", deployer);
+  const lotteryContract = await hre.ethers.getContract<Contract>("Lottery1", deployer);
   const lotteryTokenContract = await hre.ethers.getContractAt("LotteryToken", await lotteryContract.paymentToken());
 
-  console.log("👋 DeployedContract: Group 9 Lottery");
   const symbol = await lotteryTokenContract.symbol();
+  const tokenName = await lotteryTokenContract.name();
+
+  console.log(`👋 DeployedContract: ${tokenName} Lottery`);
   console.log("   Symbol: ", symbol);
   console.log("   Purchase ration: ", await lotteryContract.purchaseRatio());
   console.log(`   Bet price: ${(await lotteryContract.betPrice()).toString()} ${symbol}`);
@@ -30,4 +33,4 @@ export default deployLotteryContract;
 
 // Tags are useful if you have multiple deploy files and only want to run one of them.
 // e.g. yarn deploy --tags YourContract
-deployLotteryContract.tags = ["Lottery"];
+deployLotteryContract.tags = ["Lottery", "Lottery1"];

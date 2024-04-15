@@ -91,7 +91,7 @@ contract Lottery is Ownable {
     }
 
     /// @notice Calls the bet function `times` times
-    function betMany(uint256 times) external {
+    function betMany(uint256 times) external whenBetsOpen {
         require(times > 0);
 
         uint256 totalFee =  betFee * times;

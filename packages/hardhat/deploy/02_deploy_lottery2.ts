@@ -6,14 +6,15 @@ const deployLottery2Contracts: DeployFunction = async function (hre: HardhatRunt
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  await deploy("Lottery", {
+  await deploy("Lottery2", {
     from: deployer,
+    contract: "Lottery",
     args: ["Additional Lottery for test", "ALT", 300, 10n ** 16n, 10n ** 15n],
     log: true,
     autoMine: true,
   });
 
-  const lotteryContract = await hre.ethers.getContract<Contract>("Lottery", deployer);
+  const lotteryContract = await hre.ethers.getContract<Contract>("Lottery2", deployer);
   const lotteryTokenContract = await hre.ethers.getContractAt("LotteryToken", await lotteryContract.paymentToken());
 
   const symbol = await lotteryTokenContract.symbol();
