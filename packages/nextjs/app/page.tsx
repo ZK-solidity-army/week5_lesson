@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Lottie from "lottie-react";
 import type { NextPage } from "next";
@@ -13,12 +14,30 @@ import ContractInfo from "~~/components/viem/ContractInfo";
 import PurchaseTokens from "~~/components/viem/PurchaseTokens";
 
 const Home: NextPage = () => {
+  // workaround for removing non-auth page blinking
+  // when user has connected wallet we would like to show blank page
+  // until we get the account data
+  const [isLoading, setLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 150);
+  }, []);
+
   const account = useAccount();
-  if (!account || !account.isConnected) {
+  if (isLoading) {
+    return null;
+  }
+  if (account.isDisconnected) {
     return (
       <>
-        <Lottie animationData={lottery} className="w-[31.25rem] mx-auto mt-[-3.125rem]" />
-        <h1 className="text-center text-3xl mt-[-6.25rem]">Welcome to the Lottery!</h1>
+        <div className="overflow-hidden w-full h-[20rem] relative">
+          <Lottie
+            animationData={lottery}
+            className="w-[30rem] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          />
+        </div>
+        <h1 className="text-center text-3xl">Welcome to the Lottery!</h1>
         <ConnectButton.Custom>
           {({ openConnectModal }) => (
             <button className="btn btn-neutral mt-10 mx-auto block" onClick={openConnectModal}>
