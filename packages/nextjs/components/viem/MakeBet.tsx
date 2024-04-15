@@ -13,7 +13,7 @@ import { ContractContext } from "~~/context";
 import deployedContracts from "~~/contracts/deployedContracts";
 
 export default function MakeBet({ className }: { className?: string }) {
-  const [amount, setAmount] = useState<string>("");
+  const [amount, setAmount] = useState<string>("1");
   const [txHashes, setTxHashes] = useState<string[]>([]);
 
   const lottieRef: LottieRef = useRef(null);
