@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import TransactionList from "./TransactionList";
 import { twMerge } from "tailwind-merge";
-import { parseEther, parseUnits } from "viem";
-import { useContractWrite } from "wagmi";
+import { encodeFunctionData, parseEther, parseUnits } from "viem";
+import { useAccount, useContractWrite, useFeeData, usePublicClient } from "wagmi";
 import * as chains from "wagmi/chains";
 import ErrorBlock from "~~/components/Error";
 import { ContractContext } from "~~/context";
@@ -12,8 +12,13 @@ import deployedContracts from "~~/contracts/deployedContracts";
 import formatUnits from "~~/utils/formatUnits";
 
 export default function PurchaseTokens({ className }: { className?: string }) {
+  const account = useAccount();
+  const publicClient = usePublicClient({ chainId: chains.sepolia.id });
   const [amount, setAmount] = useState<string>("");
   const [txHashes, setTxHashes] = useState<string[]>([]);
+  const [gasPrice, setGasPrice] = useState<bigint>(0n);
+
+  const { data: feeData } = useFeeData({ watch: true });
 
   const contractContext = useContext(ContractContext);
   const tokenSymbol = contractContext.tokenSymbol || "Unknown";
@@ -29,6 +34,31 @@ export default function PurchaseTokens({ className }: { className?: string }) {
       [setTxHashes],
     ),
   });
+
+  useEffect(() => {
+    if (!amount) return;
+    if (!contractContext.purchaseRatio) return;
+    if (!account) return;
+    if (!feeData) return;
+
+    const ethAmount = getEthAmount(amount, contractContext.purchaseRatio);
+    if (!ethAmount) return;
+
+    publicClient
+      .estimateGas({
+        account: account.address as `0x${string}`,
+        to: contractContext.lotteryAddress,
+        data: encodeFunctionData({
+          abi: deployedContracts[chains.sepolia.id].Lottery.abi,
+          functionName: "purchaseTokens",
+        }),
+        value: ethAmount,
+      })
+      .then(gas => {
+        if (!feeData.maxFeePerGas) return;
+        setGasPrice(gas * feeData.maxFeePerGas);
+      });
+  }, [account, amount, contractContext, publicClient, setGasPrice, feeData]);
 
   const {
     isLoading: approveIsLoading,
@@ -93,9 +123,20 @@ export default function PurchaseTokens({ className }: { className?: string }) {
           </div>
           {amount && contractContext.purchaseRatio ? (
             <div className="text-neutral-500 text-sm my-3">
-              It costs{" "}
-              {formatUnits(getEthAmount(amount, contractContext.purchaseRatio), contractContext.tokenDecimals || 0)} SEP
-              to buy
+              <div>
+                It costs{" "}
+                {formatUnits(
+                  getEthAmount(amount, contractContext.purchaseRatio) + gasPrice,
+                  contractContext.tokenDecimals || 0,
+                )}{" "}
+                SEP to buy
+              </div>
+              {gasPrice ? (
+                <div>
+                  {formatUnits(getEthAmount(amount, contractContext.purchaseRatio), contractContext.tokenDecimals || 0)}{" "}
+                  price and {formatUnits(gasPrice, contractContext.tokenDecimals || 0)} gas fee
+                </div>
+              ) : null}
             </div>
           ) : null}
           <div>
