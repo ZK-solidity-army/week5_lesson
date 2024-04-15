@@ -2,9 +2,10 @@
 
 import { useCallback, useContext, useEffect, useState } from "react";
 import TransactionList from "./TransactionList";
+import cn from "classnames";
 import { twMerge } from "tailwind-merge";
 import { encodeFunctionData, parseEther, parseUnits } from "viem";
-import { useAccount, useContractWrite, useFeeData, usePublicClient } from "wagmi";
+import { useAccount, useBalance, useContractWrite, useFeeData, usePublicClient } from "wagmi";
 import * as chains from "wagmi/chains";
 import ErrorBlock from "~~/components/Error";
 import { ContractContext } from "~~/context";
@@ -18,10 +19,10 @@ export default function PurchaseTokens({ className }: { className?: string }) {
   const [txHashes, setTxHashes] = useState<string[]>([]);
   const [gasPrice, setGasPrice] = useState<bigint>(0n);
 
-  const { data: feeData } = useFeeData({ watch: true });
-
   const contractContext = useContext(ContractContext);
   const tokenSymbol = contractContext.tokenSymbol || "Unknown";
+  const { data: balance } = useBalance({ address: account.address, watch: true });
+  const { data: feeData } = useFeeData({ watch: true });
 
   const { isLoading, write, error } = useContractWrite({
     address: contractContext.lotteryAddress,
@@ -124,7 +125,15 @@ export default function PurchaseTokens({ className }: { className?: string }) {
             />
           </div>
           {parseInt(amount, 10) && contractContext.purchaseRatio ? (
-            <div className="text-neutral-500 text-sm my-3">
+            <div
+              className={cn(
+                "text-sm my-3",
+                getEthAmount(amount, contractContext.purchaseRatio) + (gasPrice || 0n) >
+                  ((balance && balance.value) || 0n)
+                  ? "text-error"
+                  : "text-neutral-500",
+              )}
+            >
               <div>
                 It costs{" "}
                 {formatUnits(
