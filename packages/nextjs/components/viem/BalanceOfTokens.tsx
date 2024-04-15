@@ -17,7 +17,7 @@ export default function BalanceOfTokens({ address }: { address: `0x${string}` })
       <div className="stat-figure text-secondary">
         <TokenIcon className="inline-block w-8 h-8 stroke-current" />
       </div>
-      <div className="stat-title">Lottery Token</div>
+      <div className="stat-title">Token {contractContext.tokenSymbol}</div>
       <div className="stat-value text-secondary">
         {address && typeof tokenDecimals !== "undefined" ? (
           <Balance tokenAddress={tokenAddress} address={address} decimals={tokenDecimals} />

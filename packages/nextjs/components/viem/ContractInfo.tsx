@@ -71,11 +71,11 @@ export default function ContractInfo({ className }: { className?: string }) {
             <CurrencyDollarIcon className="inline-block w-7 h-7 stroke-current stroke-1" />
             */}
           </div>
-          <div className="stat-title">Allowance</div>
+          <div className="stat-title">Allowance {contractContext.tokenSymbol}</div>
           <div className="stat-value text-accent">
             {contractContext.tokenDecimals && allowance ? formatUnits(allowance, contractContext.tokenDecimals) : "0"}
           </div>
-          <div className="stat-desc">Allowed to transfer</div>
+          <div className="stat-desc">Approved to sell</div>
         </div>
 
         <div className="stat">
@@ -92,7 +92,7 @@ export default function ContractInfo({ className }: { className?: string }) {
             </svg>
             */}
           </div>
-          <div className="stat-title">Prize pool</div>
+          <div className="stat-title">Prize pool {contractContext.tokenSymbol}</div>
           <div className="stat-value text-warning">
             {prizePool && typeof tokenDecimals !== "undefined" ? formatUnits(prizePool, tokenDecimals) : 0}
           </div>
@@ -112,7 +112,7 @@ export default function ContractInfo({ className }: { className?: string }) {
               </div>
             </div>
           </div>
-          <div className="stat-title">Won</div>
+          <div className="stat-title">Won {contractContext.tokenSymbol}</div>
           <div className="stat-value">{prize ? formatEther(prize) : 0}</div>
           <div className="stat-desc">You can withdraw</div>
         </div>
