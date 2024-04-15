@@ -112,7 +112,7 @@ export default function PurchaseTokens({ className }: { className?: string }) {
       <div className="card-body">
         <div className="md:w-[19.375rem]">
           <div className="w-full mb-2 relative">
-            <span className="absolute block right-3 top-4 text-2xl text-neutral-500 md:max-w-[5rem] whitespace-nowrap text-ellipsis overflow-hidden">
+            <span className="absolute block right-3 top-4 text-2xl text-neutral-500 md:max-w-[6.25rem] whitespace-nowrap text-ellipsis overflow-hidden">
               {tokenSymbol}
             </span>
             <input
