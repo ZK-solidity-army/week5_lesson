@@ -7,12 +7,12 @@ export type FormatUnitsErrorType = ErrorType;
  * https://github.com/wevm/viem/blob/d2f93e726df1ab1ff86098d68a4406f6fae315b8/src/utils/unit/formatUnits.ts
  *
  * Allow to limit amount of zeros after the decimal point.
+ * but increase the limit if there is a first non-zero digit after the limit.
  *
  * @example
- * limit = 3
- * formatUnits(1000000000000000000n, 18) // '1.0'
- * formatUnits(1000000100000000000n, 18) // '1.0000001'
- * formatUnits(1001713200000000000n, 18) // '1.002'
+ * formatUnits(1000000000000000000n, 18, 3) // '1'
+ * formatUnits(1000000100000000000n, 18, 3) // '1.0000001' <- first non-zero digit after the limit
+ * formatUnits(1001713200000000000n, 18, 3) // '1.002'
  */
 export default function formatUnits(value: bigint, decimals: number, limit = 4) {
   let display = value.toString();
@@ -42,7 +42,10 @@ export default function formatUnits(value: bigint, decimals: number, limit = 4) 
     for (let i = limit - 1; i >= 0; i--) {
       const v = Number(a[i]) + carry;
       a[i] = (v % 10).toString();
-      if (v < 10) break;
+      if (v < 10) {
+        carry = 0;
+        break;
+      }
       limit -= 1;
     }
     fraction = a.slice(0, limit).join("");
