@@ -121,7 +121,7 @@ export default function PurchaseTokens({ className }: { className?: string }) {
               onChange={onChange}
             />
           </div>
-          {amount && contractContext.purchaseRatio ? (
+          {parseInt(amount, 10) && contractContext.purchaseRatio ? (
             <div className="text-neutral-500 text-sm my-3">
               <div>
                 It costs{" "}
